@@ -4,7 +4,7 @@ Blazingly fast bang proxy &amp; search engine
 
 ## TODO
 - [x] Setup client
-- [ ] Setup server
+- [x] Setup server
 - [ ] Communication between the 2 
 
 
