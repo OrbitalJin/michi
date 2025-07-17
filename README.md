@@ -15,6 +15,7 @@ Blazingly fast bang proxy &amp; search engine
 
 
 ## server
+- [ ] bangs regex
 - [ ] Parse bangs & query
 - [ ] Fetch bang from cache fallback to database if no  
 - [ ] Respond to client with approriate constructed url 
