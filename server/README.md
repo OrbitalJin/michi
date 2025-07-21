@@ -4,5 +4,5 @@
 ## Todo
 
 - [x] Setup database connection
-- [ ] Setup database migrations
+- [x] Setup database migrations
 - [ ] Abstract the database connection behind an interface
