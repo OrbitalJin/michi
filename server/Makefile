@@ -1,6 +1,6 @@
 dev:
-	@go run ./main.go
+	@go run ./cmd/api/main.go
 
 
 prod:
-	@mkdir bin && go build -o ./bin/pow ./main.go && chmod +x ./bin/pow && ./bin/pow
+	@mkdir -p build && go build -o ./build/pow ./cmd/api/main.go && chmod +x ./build/pow && ./build/pow
