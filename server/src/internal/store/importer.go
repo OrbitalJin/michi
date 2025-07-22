@@ -1,4 +1,4 @@
-package store 
+package store
 
 import (
 	"encoding/json"
@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func Import(path string, db *DB) error {
+func Import(path string, db *Store) error {
 
 	data, err := os.ReadFile(path)
 
@@ -22,7 +22,7 @@ func Import(path string, db *DB) error {
 		return fmt.Errorf("failed to decode json object: %w", err)
 	}
 
-	if sps != nil && len(sps) > 0 {
+	if len(sps) > 0 {
 		for _, sp := range sps {
 			db.InsertProvider(sp)
 			fmt.Println(sp)

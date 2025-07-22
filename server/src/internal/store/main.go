@@ -8,12 +8,12 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-type DB struct {
+type Store struct {
 	conn *sql.DB
 	cfg  *Config
 }
 
-func New(cfg *Config) (*DB, error) {
+func New(cfg *Config) (*Store, error) {
 	if cfg.path == "" {
 		return nil, fmt.Errorf("path to database cannot be empty")
 	}
@@ -23,13 +23,13 @@ func New(cfg *Config) (*DB, error) {
 		return nil, err
 	}
 
-	return &DB{
+	return &Store{
 		conn: conn,
 		cfg:  cfg,
 	}, nil
 }
 
-func (db *DB) Migrate() error {
+func (s *Store) Migrate() error {
 	stmt := `
 	CREATE TABLE IF NOT EXISTS search_providers (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -41,17 +41,17 @@ func (db *DB) Migrate() error {
 		site_name TEXT,
 		subcategory TEXT
 	);`
-	_, err := db.conn.Exec(stmt)
+	_, err := s.conn.Exec(stmt)
 	return err
 }
 
-func (db *DB) GetProviderByTag(tag string) (*SearchProvider, error) {
+func (s *Store) GetProviderByTag(tag string) (*SearchProvider, error) {
 	var sp SearchProvider
 
 	stmt := `
 	SELECT id, tag, url, category, domain, rank, site_name, subcategory
 	FROM search_providers WHERE tag = ?`
-	err := db.conn.QueryRow(stmt, tag).Scan(
+	err := s.conn.QueryRow(stmt, tag).Scan(
 		&sp.ID,
 		&sp.Tag,
 		&sp.URL,
@@ -69,13 +69,13 @@ func (db *DB) GetProviderByTag(tag string) (*SearchProvider, error) {
 	return &sp, nil
 }
 
-func (db *DB) InsertProvider(sp SearchProvider) error {
+func (s *Store) InsertProvider(sp SearchProvider) error {
 	stmt := `
 	INSERT INTO search_providers
 	(tag, url, category, domain, rank, site_name, subcategory)
 	VALUES (?, ?, ?, ?, ?, ?, ?);`
 
-	_, err := db.conn.Exec(stmt,
+	_, err := s.conn.Exec(stmt,
 		sp.Tag,
 		sp.URL,
 		sp.Category,
@@ -92,6 +92,6 @@ func (db *DB) InsertProvider(sp SearchProvider) error {
 	return err
 }
 
-func (db *DB) Shutdown() {
-	_ = db.conn.Close()
+func (s *Store) Shutdown() {
+	_ = s.conn.Close()
 }

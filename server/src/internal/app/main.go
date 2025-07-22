@@ -4,15 +4,17 @@ import (
 	"fmt"
 
 	"github.com/OrbitalJin/pow/internal/parser"
+	"github.com/OrbitalJin/pow/internal/service"
 	"github.com/OrbitalJin/pow/internal/store"
 	"github.com/gin-gonic/gin"
 )
 
 type App struct {
-	Router *gin.Engine
-	Parser *parser.Parser
-	Store *store.DB
-	cfg *Config
+	Router  *gin.Engine
+	Service *service.ProviderService
+	parser  *parser.Parser
+	store   *store.Store
+	cfg     *Config
 }
 
 func New(appCfg *Config) *App {
@@ -28,10 +30,17 @@ func New(appCfg *Config) *App {
 		panic(fmt.Errorf("failed to initiate the connection with the database: %w", err))
 	}
 
+	service := service.NewProviderService(parser, store)
+
 	return &App{
-		Router: gin.Default(),
-		Parser: parser,
-		Store: store,
-		cfg: appCfg,
+		Router:  gin.Default(),
+		Service: service,
+		parser:  parser,
+		store:   store,
+		cfg:     appCfg,
 	}
+}
+
+func (app *App) Start() {
+	app.Router.Run()
 }
