@@ -10,22 +10,22 @@ import (
 
 type DB struct {
 	conn *sql.DB
-	path string
+	cfg  *Config
 }
 
-func Init(path string) (*DB, error) {
-	if path == "" {
+func New(cfg *Config) (*DB, error) {
+	if cfg.path == "" {
 		return nil, fmt.Errorf("path to database cannot be empty")
 	}
 
-	conn, err := sql.Open("sqlite3", path)
+	conn, err := sql.Open("sqlite3", cfg.path)
 	if err != nil {
 		return nil, err
 	}
 
 	return &DB{
 		conn: conn,
-		path: path,
+		cfg:  cfg,
 	}, nil
 }
 

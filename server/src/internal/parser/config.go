@@ -12,11 +12,17 @@ func NewConfig(detectionPattern, removalPattern string) *Config {
 	}
 }
 
-func (c *Config) GetPattern() string {
+func GetDefaultConfig() *Config {
+	return &Config{
+		detectionPattern: `!(\b\w+\b)`,
+		removalPattern:   `!\b\w+\b`,
+	}
+}
+
+func (c *Config) GetDetectionPattern() string {
 	return c.detectionPattern
 }
 
-func (c *Config) SetPattern(pattern string) bool {
-	c.detectionPattern = pattern
-	return true
+func (c *Config) GetRemovalPattern() string {
+	return c.removalPattern
 }

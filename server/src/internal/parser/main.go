@@ -45,13 +45,15 @@ func (p Parser) Collect(input string) (*Result, error) {
 
 	matches := p.reExtract.FindAllStringSubmatch(input, -1)
 
-	if len(matches) > 1 {
+	if len(matches) >= 1 {
 		for _, match := range matches {
 			if len(match) > 1 {
 				words = append(words, match[1])
 			}
 		}
-	}
+	} else {
+		words = make([]string, 0)
+	}	
 
 	query := p.reRemove.ReplaceAllString(input, "")
 	query = strings.Join(strings.Fields(query), " ")
