@@ -8,5 +8,5 @@
 - [x] Implement query & bang parsing 
 - [x] Check bang matches against db and keep highest ranking one 
 - [x] Implement service layer 
-- [ ] Implement url resolving
+- [x] Implement url resolving
 - [ ] Abstract the database connection behind an interface
