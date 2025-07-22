@@ -7,6 +7,6 @@
 - [x] scrape & dump duckduckgo's bang index into the relational db
 - [x] Implement query & bang parsing 
 - [x] Check bang matches against db and keep highest ranking one 
-- [ ] Implement service layer 
+- [x] Implement service layer 
 - [ ] Implement url resolving
 - [ ] Abstract the database connection behind an interface
