@@ -9,5 +9,7 @@
 - [x] Check bang matches against db and keep highest ranking one 
 - [x] Implement service layer 
 - [x] Implement url resolving
+- [x] fix cors
+- [ ] implement caching using sync.Map
 - [ ] clean up api & router
 - [ ] Abstract the database connection behind an interface

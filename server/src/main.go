@@ -7,6 +7,7 @@ import (
 	"github.com/OrbitalJin/pow/internal/app"
 	"github.com/OrbitalJin/pow/internal/parser"
 	"github.com/OrbitalJin/pow/internal/store"
+	"github.com/gin-contrib/cors" // Import the cors package
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,6 +16,15 @@ func main() {
 	storeConfig := store.NewConfig("./database.db")
 	appConfig := app.NewConfig(parserConfig, storeConfig)
 	app := app.New(appConfig)
+
+	app.Router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:5173", "http://localhost:3000"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           300, // Maximum value of the Access-Control-Max-Age header in seconds.
+	}))
 
 	app.Router.GET("/provider", func(ctx *gin.Context) {
 		tag := ctx.Query("tag")
