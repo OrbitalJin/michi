@@ -1,17 +1,17 @@
-# qMuxr 🚀
+# qMuxr
 
 A blazing-fast, local search multiplexer for your browser's default search. Navigate the web with custom bangs, shortcuts, and session launchers, all powered by a tiny, self-hosted Go service.
 
-## ✨ Features
+## Features
 
 *   **Bang Search (`!keyword`):** Directly jump to your favorite search engines or websites with custom prefixes (e.g., `!g go modules`, `!yt cat videos`).
-*   **Web Shortcuts (`qmx#shortcut_name`):** Create personalized, quick links to any URL (e.g., `qmx$portal` to open your school portal).
+*   **Web Shortcuts (`qmx#shortcut_name`):** Create personalized, quick links to any URL (e.g., `qmx#portal` to open your school portal).
 *   **Session Launcher (`qmx@session_name`):** Open multiple predefined tabs with a single command (e.g., `qmx@dev` to open GitHub, Stack Overflow, and your dev server).
 *   **Local & Private:** Your configurations are stored locally in a SQLite database, never leaving your machine.
 *   **Blazing Fast:** Runs as a tiny background service, providing instant redirects without any network latency or browser pop-up blockers.
 *   **Cross-Platform:** Built with Go, available for Linux, macOS, and Windows.
 
-## 🚀 Get Started
+## Get Started
 
 ### 1. Installation
 
@@ -57,7 +57,7 @@ Set `http://localhost:5980/?q=%s` as your browser's default search engine.
 
 ---
 
-## 💡 Usage
+## Usage
 
 Once configured, simply type into your browser's address bar:
 
@@ -74,7 +74,7 @@ Once configured, simply type into your browser's address bar:
 
 ---
 
-## 🛠️ CLI Commands
+## CLI Commands
 
 `qmuxr` offers commands to manage your bangs, shortcuts, and sessions:
 
@@ -90,17 +90,6 @@ Once configured, simply type into your browser's address bar:
     *   Example: `qmuxr delete bang old`
     *   Example: `qmuxr delete shortcut old-link`
     *   Example: `qmuxr delete session old-session`
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-## 🙏 Acknowledgements
-
-*   Inspired by [DuckDuckGo's bangs](https://duckduckgo.com/bang).
-*   Built with [Go](https://go.dev/), [Gin](https://gin-gonic.com/), and [Cobra](https://github.com/spf13/cobra).
 
 ---
 
@@ -121,7 +110,7 @@ This project is licensed under the [MIT License](LICENSE).
 - [x] fix cors
 - [x] Implement provider fallback
 - [x] Speed it up
-- [ ] clean up api & router
+- [x] clean up api & router
 - [ ] implement caching using sync.Map
 - [ ] Embed snapshot of the database & hydrate a local version on the user's machine
 - [ ] Implement features: shortcuts #, sessions @ and history $
