@@ -2,9 +2,8 @@
 ## Ideas
 - [ ] Local history
 - [ ] Analytics
-- [ ] Settings dashboard
+- [ ] Settings dashboard or cli
 - [ ] "Shortcuts" e.g. repos => github.com/johndoe?tab=repositories
-
 
 ## Todo
 - [x] Setup database connection
@@ -16,8 +15,9 @@
 - [x] Implement url resolving
 - [x] fix cors
 - [x] Implement provider fallback
-- [ ] Speed it up
-- [ ] implement caching using sync.Map
+- [x] Speed it up
 - [ ] clean up api & router
-- [ ] Implement history
-- [ ] Abstract the database connection behind an interface
+- [ ] implement caching using sync.Map
+- [ ] Embed snapshot of the database & hydrate a local version on the user's machine
+- [ ] Implement features: shortcuts #, sessions @ and history $
+- [ ] build cli
