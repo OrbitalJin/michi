@@ -13,7 +13,7 @@ import (
 
 func main() {
 	parserConfig := parser.NewConfig(`!(\b\w+\b)`, `!\b\w+\b`)
-	storeConfig := store.NewConfig("./database.db", "g")
+	storeConfig := store.NewConfig("./index.db", "g")
 	appConfig := app.NewConfig(parserConfig, storeConfig)
 	app := app.New(appConfig)
 

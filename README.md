@@ -1,4 +1,9 @@
 
+## Ideas
+- [ ] Local history
+- [ ] Analytics
+- [ ] Settings dashboard
+- [ ] "Shortcuts" e.g. repos => github.com/johndoe?tab=repositories
 
 
 ## Todo
