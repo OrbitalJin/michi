@@ -1,24 +1,18 @@
-# pow
-Blazingly fast bang proxy &amp; search engine
 
 
-## TODO
-- [x] Setup client
-- [x] Setup server
-- [ ] Communication between the 2 
 
-
-## client
-- [ ] Read query
-- [ ] Forward query to server for processing
-- [ ] Redirect user based on the server's response
-
-
-## server
-- [x] bangs regex
-- [ ] Parse bangs & query
-- [ ] Fetch bang from cache fallback to database if no  
-- [ ] Respond to client with approriate constructed url 
-- [ ] Store analytics
-
-
+## Todo
+- [x] Setup database connection
+- [x] Setup database migrations
+- [x] scrape & dump duckduckgo's bang index into the relational db
+- [x] Implement query & bang parsing 
+- [x] Check bang matches against db and keep highest ranking one 
+- [x] Implement service layer 
+- [x] Implement url resolving
+- [x] fix cors
+- [x] Implement provider fallback
+- [ ] Speed it up
+- [ ] implement caching using sync.Map
+- [ ] clean up api & router
+- [ ] Implement history
+- [ ] Abstract the database connection behind an interface

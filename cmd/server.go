@@ -23,8 +23,30 @@ func main() {
 		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
-		MaxAge:           300, // Maximum value of the Access-Control-Max-Age header in seconds.
+		MaxAge:           300,
 	}))
+
+	app.Router.GET("/api/search", func(ctx *gin.Context) {
+		query := ctx.Query("q")
+
+		result, provider, err := app.Service.CollectAndRank(query)
+
+		if err != nil {
+			log.Println(err)
+			ctx.JSON(http.StatusBadRequest, "error")
+			return
+		}
+
+		redirect, err := app.Service.ResolveWithFallback(result.Query, provider)
+
+		if err != nil {
+			log.Println(err)
+			ctx.JSON(http.StatusBadRequest, "soup")
+			return
+		}
+
+		ctx.Redirect(http.StatusFound, *redirect)
+	})
 
 	app.Router.GET("/provider", func(ctx *gin.Context) {
 		tag := ctx.Query("tag")
