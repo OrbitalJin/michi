@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"log"
 	"net/url"
 	"strings"
 
@@ -83,10 +84,31 @@ func (svc *ProviderService) CollectAndRank(value string) (*parser.Result, *store
 
 func (svc *ProviderService) Resolve(query string, provider *store.SearchProvider) (*string, error) {
 	if provider == nil {
-		return nil, fmt.Errorf("provider cannot be nil")
+		log.Println("provider cannot be nil.")
+		return nil, fmt.Errorf("provider cannot be nil.")
 	}
 
 	encoded := url.QueryEscape(query)
 	result := strings.Replace(provider.URL, "{{{s}}}", encoded, 1)
 	return &result, nil
 }
+
+
+func (svc *ProviderService) ResolveWithFallback(query string, provider *store.SearchProvider) (*string, error) {
+	if provider != nil {
+		return svc.Resolve(query, provider)
+	}
+
+	log.Println("no provider provided, falling back to default.")
+
+	defaultProvider := svc.store.GetCfg().GetDefaultProvider()
+	p, err := svc.store.GetProviderByTag(defaultProvider)
+
+	if err != nil {
+		log.Println("no default provider available.")
+		return nil, err
+	}
+
+	return svc.Resolve(query, p)
+}
+

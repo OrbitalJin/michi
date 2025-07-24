@@ -13,7 +13,7 @@ import (
 
 func main() {
 	parserConfig := parser.NewConfig(`!(\b\w+\b)`, `!\b\w+\b`)
-	storeConfig := store.NewConfig("./database.db")
+	storeConfig := store.NewConfig("./database.db", "g")
 	appConfig := app.NewConfig(parserConfig, storeConfig)
 	app := app.New(appConfig)
 
@@ -45,13 +45,15 @@ func main() {
 		if err != nil {
 			log.Println(err)
 			ctx.JSON(http.StatusBadRequest, "error")
+			return
 		}
 
-		redirect, err := app.Service.Resolve(result.Query, provider)
+		redirect, err := app.Service.ResolveWithFallback(result.Query, provider)
 
 		if err != nil {
 			log.Println(err)
-			ctx.JSON(http.StatusBadRequest, "error")
+			ctx.JSON(http.StatusBadRequest, "soup")
+			return
 		}
 
 		ctx.JSON(http.StatusOK, gin.H{

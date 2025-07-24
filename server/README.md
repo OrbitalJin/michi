@@ -10,6 +10,7 @@
 - [x] Implement service layer 
 - [x] Implement url resolving
 - [x] fix cors
+- [x] Implement provider fallback
 - [ ] implement caching using sync.Map
 - [ ] clean up api & router
 - [ ] Abstract the database connection behind an interface

@@ -95,3 +95,7 @@ func (s *Store) InsertProvider(sp SearchProvider) error {
 func (s *Store) Shutdown() {
 	_ = s.conn.Close()
 }
+
+func (s *Store) GetCfg() *Config {
+	return s.cfg
+}
