@@ -1,4 +1,4 @@
-module github.com/OrbitalJin/pow
+module github.com/OrbitalJin/qmuxr
 
 go 1.24.5
 

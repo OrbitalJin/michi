@@ -2,9 +2,9 @@ package server
 
 import (
 	"fmt"
-	"github.com/OrbitalJin/pow/internal/parser"
-	"github.com/OrbitalJin/pow/internal/service"
-	"github.com/OrbitalJin/pow/internal/store"
+	"github.com/OrbitalJin/qmuxr/internal/parser"
+	"github.com/OrbitalJin/qmuxr/internal/service"
+	"github.com/OrbitalJin/qmuxr/internal/store"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )

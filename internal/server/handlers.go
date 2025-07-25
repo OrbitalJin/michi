@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/OrbitalJin/pow/internal/service"
+	"github.com/OrbitalJin/qmuxr/internal/service"
 	"github.com/gin-gonic/gin"
 )
 

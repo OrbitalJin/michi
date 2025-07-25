@@ -6,24 +6,40 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/OrbitalJin/pow/internal/parser"
-	"github.com/OrbitalJin/pow/internal/store"
+	"github.com/OrbitalJin/qmuxr/internal/cache"
+	"github.com/OrbitalJin/qmuxr/internal/parser"
+	"github.com/OrbitalJin/qmuxr/internal/store"
 )
 
 type ProviderService struct {
 	parser *parser.Parser
 	store  *store.Store
+	cache *cache.Cache[string, *store.SearchProvider]
 }
 
 func NewProviderService(p *parser.Parser, s *store.Store) *ProviderService {
 	return &ProviderService{
 		parser: p,
 		store:  s,
+		cache: cache.New[string, *store.SearchProvider](),
 	}
 }
 
 func (svc *ProviderService) GetByTag(tag string) (*store.SearchProvider, error) {
-	return svc.store.GetProviderByTag(tag)
+	provider, ok := svc.cache.Load(tag)
+
+	if ok {
+		return provider, nil
+	}
+
+	provider, err := svc.store.GetProviderByTag(tag)
+	fmt.Println(provider, err)
+
+	if err == nil && provider != nil {
+		svc.cache.Store(tag, provider)
+	}
+
+	return provider, err
 }
 
 func (svc *ProviderService) CollectAll(value string) (*[]*store.SearchProvider, error) {
