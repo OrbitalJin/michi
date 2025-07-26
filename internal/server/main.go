@@ -2,7 +2,9 @@ package server
 
 import (
 	"fmt"
+
 	"github.com/OrbitalJin/qmuxr/internal/parser"
+	"github.com/OrbitalJin/qmuxr/internal/server/handlers"
 	"github.com/OrbitalJin/qmuxr/internal/service"
 	"github.com/OrbitalJin/qmuxr/internal/store"
 	"github.com/gin-contrib/cors"
@@ -74,7 +76,7 @@ func Default(config *Config) (*Server, error) {
 	}
 
 	server.Router.GET("/search", func(ctx *gin.Context) {
-		Search(
+		handlers.Search(
 			ctx,
 			server.ProviderService,
 			server.HistoryService,
