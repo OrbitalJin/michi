@@ -112,6 +112,6 @@ Once configured, simply type into your browser's address bar:
 - [x] Speed it up
 - [x] clean up api & router
 - [x] implement caching using sync.Map
-- [ ] Embed snapshot of the database & hydrate a local version on the user's machine
 - [ ] Implement features: shortcuts #, sessions @ and history $
 - [ ] build cli
+- [ ] Embed snapshot of the database & hydrate a local version on the user's machine
