@@ -1,4 +1,4 @@
-package store
+package models
 
 type SearchProvider struct {
 	ID          int    `json:"id"`

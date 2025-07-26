@@ -94,10 +94,18 @@ Once configured, simply type into your browser's address bar:
 ---
 
 ## Ideas
-- [ ] Local history
+- [ ] History
 - [ ] Analytics
 - [ ] Settings dashboard or cli
 - [ ] "Shortcuts" e.g. repos => github.com/johndoe?tab=repositories
+
+## Features 
+
+### History
+- [x] Repository
+- [x] Service
+- [ ] Go routine for db transactions
+- [ ] Middleware
 
 ## Todo
 - [x] Setup database connection

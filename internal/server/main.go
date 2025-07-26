@@ -10,11 +10,12 @@ import (
 )
 
 type Server struct {
-	Router  *gin.Engine
-	Service *service.ProviderService
-	parser  *parser.Parser
-	store   *store.Store
-	config  *Config
+	Router          *gin.Engine
+	ProviderService *service.ProviderService
+	HistoryService  *service.HistoryService
+	parser          *parser.Parser
+	store           *store.Store
+	config          *Config
 }
 
 func New(config *Config, useCors bool) (*Server, error) {
@@ -30,7 +31,13 @@ func New(config *Config, useCors bool) (*Server, error) {
 		return nil, fmt.Errorf("failed to access the store: %w", err)
 	}
 
-	service := service.NewProviderService(parser, store)
+	pService := service.NewProviderService(
+		parser,
+		store.SearchProviders,
+		config.serviceCgf,
+	)
+
+	hService := service.NewHistoryService(store.History)
 
 	router := gin.Default()
 
@@ -46,11 +53,12 @@ func New(config *Config, useCors bool) (*Server, error) {
 	}
 
 	return &Server{
-		Router:  router,
-		Service: service,
-		parser:  parser,
-		store:   store,
-		config:  config,
+		Router:          router,
+		ProviderService: pService,
+		HistoryService:  hService,
+		parser:          parser,
+		store:           store,
+		config:          config,
 	}, nil
 }
 
@@ -58,16 +66,23 @@ func Default(config *Config) (*Server, error) {
 	server, err := New(config, true)
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create server: %w", err)
+	}
+
+	if err = server.store.Migrate(); err != nil {
+		return nil, fmt.Errorf("failed to conduct database migration: %w", err)
 	}
 
 	server.Router.GET("/search", func(ctx *gin.Context) {
-		Search(ctx, server.Service)
+		Search(
+			ctx,
+			server.ProviderService,
+			server.HistoryService,
+		)
 	})
 
 	return server, nil
 }
-
 
 func (sv *Server) Start() {
 	sv.Router.Run()

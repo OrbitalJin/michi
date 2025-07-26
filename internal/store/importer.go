@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+
+	"github.com/OrbitalJin/qmuxr/internal/models"
 )
 
 func Import(path string, db *Store) error {
@@ -14,7 +16,7 @@ func Import(path string, db *Store) error {
 		return fmt.Errorf("failed to read the provided file `%s`: %w", path, err)
 	}
 
-	var sps []SearchProvider
+	var sps []models.SearchProvider
 
 	err = json.Unmarshal(data, &sps)
 
@@ -24,7 +26,7 @@ func Import(path string, db *Store) error {
 
 	if len(sps) > 0 {
 		for _, sp := range sps {
-			db.InsertProvider(sp)
+			db.SearchProviders.Insert(sp)
 			fmt.Println(sp)
 		}
 	}
