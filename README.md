@@ -104,7 +104,7 @@ Once configured, simply type into your browser's address bar:
 ### History
 - [x] Repository
 - [x] Service
-- [ ] Go routine for db transactions
+- [x] Go routine for db transactions
 - [ ] Middleware
 
 ## Todo

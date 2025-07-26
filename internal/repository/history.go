@@ -32,7 +32,7 @@ func (r *HistoryRepo) Migrate() error {
 	return err
 }
 
-func (r *HistoryRepo) Insert(entry *models.SearchHistoryEntry) error {
+func (r *HistoryRepo) Insert(entry *models.SearchHistoryEvent) error {
 	stmt := `
 	INSERT INTO search_history
 	(query, provider_id, provider_tag, timestamp)
@@ -48,7 +48,7 @@ func (r *HistoryRepo) Insert(entry *models.SearchHistoryEntry) error {
 	return err
 }
 
-func (r *HistoryRepo) GetRecentHistory(limit int) ([]models.SearchHistoryEntry, error) {
+func (r *HistoryRepo) GetRecentHistory(limit int) ([]models.SearchHistoryEvent, error) {
 	rows, err := r.db.Query(`
 		SELECT id, query, provider_id, provider_tag, timestamp
 		FROM search_history
@@ -63,9 +63,9 @@ func (r *HistoryRepo) GetRecentHistory(limit int) ([]models.SearchHistoryEntry, 
 
 	defer rows.Close()
 
-	var history []models.SearchHistoryEntry
+	var history []models.SearchHistoryEvent
 	for rows.Next() {
-		var entry models.SearchHistoryEntry
+		var entry models.SearchHistoryEvent
 		var timestampStr string
 
 		err := rows.Scan(

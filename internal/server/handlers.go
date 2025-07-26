@@ -32,11 +32,18 @@ func Search(ctx *gin.Context, psvc *service.ProviderService, hsvc *service.Histo
 	ctx.Redirect(http.StatusFound, *redirect)
 
 	if psvc.GetCfg().ShouldKeepTrack() {
-		hsvc.Insert(&models.SearchHistoryEntry{
+		entry := &models.SearchHistoryEvent{
 			Query:       result.Query,
 			ProviderID:  provider.ID,
 			ProviderTag: provider.Tag,
 			Timestamp:   time.Now(),
-		})
+		}
+
+		go func(entry *models.SearchHistoryEvent) {
+			if err := hsvc.Insert(entry); err != nil {
+				log.Println("failed to insert search history entry: %w", err)
+			}
+
+		}(entry)
 	}
 }

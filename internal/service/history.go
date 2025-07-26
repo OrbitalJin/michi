@@ -15,6 +15,6 @@ func NewHistoryService(repo *repository.HistoryRepo) *HistoryService {
 	}
 }
 
-func (service *HistoryService) Insert(entry *models.SearchHistoryEntry) error {
+func (service *HistoryService) Insert(entry *models.SearchHistoryEvent) error {
 	return service.repo.Insert(entry)
 }
