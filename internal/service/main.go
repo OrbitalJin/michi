@@ -115,10 +115,8 @@ func (svc *ProviderService) ResolveWithFallback(query string, provider *store.Se
 		return svc.Resolve(query, provider)
 	}
 
-	log.Println("no provider provided, falling back to default.")
-
 	defaultProvider := svc.store.GetCfg().GetDefaultProvider()
-	p, err := svc.store.GetProviderByTag(defaultProvider)
+	p, err := svc.GetByTag(defaultProvider)
 
 	if err != nil {
 		log.Println("no default provider available.")
