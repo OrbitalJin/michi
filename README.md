@@ -102,8 +102,8 @@ Once configured, simply type into your browser's address bar:
 ## Features 
 
 ## Shortcuts
-- [ ] Repository
 - [ ] Service
+- [x] Repository
 - [x] Parse them seperately from bangs
 - [x] Handler struct
 - [x] Use interfaces for dependency injection

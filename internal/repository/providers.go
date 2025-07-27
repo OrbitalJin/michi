@@ -1,4 +1,4 @@
-package repository // This package now called `repository`
+package repository
 
 import (
 	"database/sql"

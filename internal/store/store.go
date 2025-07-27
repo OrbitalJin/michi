@@ -12,6 +12,7 @@ type Store struct {
 	db              *sql.DB
 	SearchProviders *repository.ProviderRepo
 	History         *repository.HistoryRepo
+	Shortcuts       *repository.ShortcutsRepository
 	cfg             *Config
 }
 
@@ -27,9 +28,10 @@ func New(cfg *Config) (*Store, error) {
 
 	return &Store{
 		db:              db,
+		cfg:             cfg,
 		SearchProviders: repository.NewProviderRepo(db),
 		History:         repository.NewHistoryRepo(db),
-		cfg:             cfg,
+		Shortcuts:       repository.NewShortcutsRepository(db),
 	}, nil
 }
 
@@ -39,6 +41,10 @@ func (s *Store) Migrate() error {
 	}
 
 	if err := s.History.Migrate(); err != nil {
+		return err
+	}
+
+	if err := s.Shortcuts.Migrate(); err != nil {
 		return err
 	}
 
