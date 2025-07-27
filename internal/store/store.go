@@ -10,10 +10,10 @@ import (
 
 type Store struct {
 	db              *sql.DB
-	SearchProviders *repository.ProviderRepo
-	History         *repository.HistoryRepo
-	Shortcuts       *repository.ShortcutsRepository
 	cfg             *Config
+	SearchProviders repository.ProviderRepoIface
+	History         repository.HistoryRepoIface
+	Shortcuts       repository.ShortcutsRepoIface
 }
 
 func New(cfg *Config) (*Store, error) {
@@ -31,7 +31,7 @@ func New(cfg *Config) (*Store, error) {
 		cfg:             cfg,
 		SearchProviders: repository.NewProviderRepo(db),
 		History:         repository.NewHistoryRepo(db),
-		Shortcuts:       repository.NewShortcutsRepository(db),
+		Shortcuts:       repository.NewShortcutsRepo(db),
 	}, nil
 }
 

@@ -8,6 +8,14 @@ import (
 	"github.com/OrbitalJin/qmuxr/internal/models"
 )
 
+type HistoryRepoIface interface {
+	Migrate() error
+	Insert(entry *models.SearchHistoryEvent) error
+	GetRecentHistory(limit int) ([]models.SearchHistoryEvent, error)
+	DeleteEntry(id int) error
+	DeleteOldHistory(beforeTime time.Time) error
+}
+
 type HistoryRepo struct {
 	db *sql.DB
 }

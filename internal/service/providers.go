@@ -23,13 +23,18 @@ type SPServiceIface interface {
 }
 
 type SPService struct {
+	repo   repository.ProviderRepoIface
 	parser *parser.Parser
-	repo   *repository.ProviderRepo
 	cache  *cache.Cache[string, *models.SearchProvider]
 	config *Config
 }
 
-func NewSearchProviderService(p *parser.Parser, r *repository.ProviderRepo, config *Config) *SPService {
+func NewSearchProviderService(
+	p *parser.Parser,
+	r repository.ProviderRepoIface,
+	config *Config,
+) *SPService {
+
 	return &SPService{
 		parser: p,
 		repo:   r,
@@ -80,7 +85,11 @@ func (service *SPService) Collect(v string) ([]models.SearchProvider, error) {
 	return sps, nil
 }
 
-func (service *SPService) CollectAndRank(v string) (*parser.Result, *models.SearchProvider, error) {
+func (service *SPService) CollectAndRank(v string) (
+	*parser.Result,
+	*models.SearchProvider,
+	error,
+) {
 	result, err := service.parser.Collect(v)
 
 	if err != nil {
@@ -120,7 +129,11 @@ func (service *SPService) Rank(result *parser.Result) *models.SearchProvider {
 	return best
 }
 
-func (service *SPService) Resolve(query string, provider *models.SearchProvider) (*models.SearchProvider, *string, error) {
+func (service *SPService) Resolve(
+	query string,
+	provider *models.SearchProvider,
+) (*models.SearchProvider, *string, error) {
+
 	if provider == nil {
 		return nil, nil, fmt.Errorf("provider cannot be nil.")
 	}
@@ -130,7 +143,11 @@ func (service *SPService) Resolve(query string, provider *models.SearchProvider)
 	return provider, &result, nil
 }
 
-func (service *SPService) ResolveWithFallback(query string, provider *models.SearchProvider) (*models.SearchProvider, *string, error) {
+func (service *SPService) ResolveWithFallback(
+	query string,
+	provider *models.SearchProvider,
+) (*models.SearchProvider, *string, error) {
+
 	if provider != nil {
 		return service.Resolve(query, provider)
 	}

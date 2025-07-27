@@ -8,6 +8,12 @@ import (
 	"github.com/mattn/go-sqlite3"
 )
 
+type ProviderRepoIface interface {
+	Migrate() error
+	GetByTag(tag string) (*models.SearchProvider, error)
+	Insert(sp models.SearchProvider) error
+}
+
 type ProviderRepo struct {
 	db *sql.DB
 }

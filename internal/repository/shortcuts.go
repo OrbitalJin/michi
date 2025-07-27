@@ -7,22 +7,22 @@ import (
 	"github.com/OrbitalJin/qmuxr/internal/models"
 )
 
-type ShortcutsRepositoryIface interface {
+type ShortcutsRepoIface interface {
 	Migrate() error
 	Insert(shortcut *models.Shortcut) error
-	GetFromAlias(alias *models.Shortcut) (*models.Shortcut, error)
+	GetFromAlias(alias string) (*models.Shortcut, error)
 	Delete(id int) error
 }
 
-type ShortcutsRepository struct {
+type ShortcutsRepo struct {
 	db *sql.DB
 }
 
-func NewShortcutsRepository(db *sql.DB) *ShortcutsRepository {
-	return &ShortcutsRepository{db}
+func NewShortcutsRepo(db *sql.DB) *ShortcutsRepo {
+	return &ShortcutsRepo{db}
 }
 
-func (repo *ShortcutsRepository) Migrate() error {
+func (repo *ShortcutsRepo) Migrate() error {
 	stmt := `
 		CREATE TABLE IF NOT EXISTS shortcuts (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,7 +34,7 @@ func (repo *ShortcutsRepository) Migrate() error {
 	return err
 }
 
-func (repo *ShortcutsRepository) Insert(shortcut *models.Shortcut) error {
+func (repo *ShortcutsRepo) Insert(shortcut *models.Shortcut) error {
 	stmt := `
 		INSERT INTO shortcuts 
 		(alias, url)
@@ -44,7 +44,7 @@ func (repo *ShortcutsRepository) Insert(shortcut *models.Shortcut) error {
 	return err
 }
 
-func (repo *ShortcutsRepository) GetFromAlias(alias string) (*models.Shortcut, error) {
+func (repo *ShortcutsRepo) GetFromAlias(alias string) (*models.Shortcut, error) {
 	var shortcut models.Shortcut
 	stmt := `SELECT id, alias, url FROM shortcuts WHERE alias = ?`
 
@@ -65,7 +65,7 @@ func (repo *ShortcutsRepository) GetFromAlias(alias string) (*models.Shortcut, e
 	return &shortcut, nil
 }
 
-func (repo *ShortcutsRepository) Delete(id int) error {
+func (repo *ShortcutsRepo) Delete(id int) error {
 	stmt := `DELETE FROM shortcuts WHERE id = ?`
 
 	_, err := repo.db.Exec(stmt, id)

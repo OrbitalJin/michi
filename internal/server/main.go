@@ -2,9 +2,6 @@ package server
 
 import (
 	"fmt"
-	"log"
-
-	"github.com/OrbitalJin/qmuxr/internal/models"
 	"github.com/OrbitalJin/qmuxr/internal/parser"
 	"github.com/OrbitalJin/qmuxr/internal/server/handler"
 	"github.com/OrbitalJin/qmuxr/internal/service"
@@ -17,6 +14,7 @@ type Server struct {
 	queryParser     parser.QueryParserIface
 	providerService service.SPServiceIface
 	historyService  service.HistoryServiceIface
+	shortcutService service.ShortcutServiceIface
 	store           *store.Store
 	router          *gin.Engine
 	handler         *handler.Handler
@@ -44,6 +42,8 @@ func New(config *Config, useCors bool) (*Server, error) {
 
 	hsvc := service.NewHistoryService(store.History)
 
+	scsvc := service.NewShortcutService(store.Shortcuts)
+
 	handler := handler.NewHandler(qp, psvc, hsvc, "q")
 
 	router := gin.Default()
@@ -63,6 +63,7 @@ func New(config *Config, useCors bool) (*Server, error) {
 		queryParser:     qp,
 		providerService: psvc,
 		historyService:  hsvc,
+		shortcutService: scsvc,
 		store:           store,
 		router:          router,
 		handler:         handler,

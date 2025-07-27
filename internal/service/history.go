@@ -12,10 +12,10 @@ type HistoryServiceIface interface {
 }
 
 type HistoryService struct {
-	repo *repository.HistoryRepo
+	repo repository.HistoryRepoIface
 }
 
-func NewHistoryService(repo *repository.HistoryRepo) *HistoryService {
+func NewHistoryService(repo repository.HistoryRepoIface) *HistoryService {
 	return &HistoryService{
 		repo: repo,
 	}
