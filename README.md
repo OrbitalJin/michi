@@ -101,6 +101,12 @@ Once configured, simply type into your browser's address bar:
 
 ## Features 
 
+## Shortcuts
+- [x] Parse them seperately from bangs
+- [x] Handler struct
+- [ ] Use interfaces for dependency injection
+- [ ] Determine precedence order
+
 ### History
 - [x] Repository
 - [x] Service

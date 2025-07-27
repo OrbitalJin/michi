@@ -7,14 +7,16 @@ import (
 )
 
 type Config struct {
-	parserCfg  *parser.Config
+	bangParserCfg  *parser.Config
+	shortcutParserCfg *parser.Config
 	storeCfg   *store.Config
 	serviceCgf *service.Config
 }
 
-func NewConfig(pCfg *parser.Config, sCfg *store.Config, svcCfg *service.Config) *Config {
+func NewConfig(bpCfg, scpCfg *parser.Config, sCfg *store.Config, svcCfg *service.Config) *Config {
 	return &Config{
-		parserCfg:  pCfg,
+		bangParserCfg:  bpCfg,
+		shortcutParserCfg: scpCfg,
 		storeCfg:   sCfg,
 		serviceCgf: svcCfg,
 	}

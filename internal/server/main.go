@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/OrbitalJin/qmuxr/internal/parser"
-	"github.com/OrbitalJin/qmuxr/internal/server/handlers"
+	"github.com/OrbitalJin/qmuxr/internal/server/handler"
 	"github.com/OrbitalJin/qmuxr/internal/service"
 	"github.com/OrbitalJin/qmuxr/internal/store"
 	"github.com/gin-contrib/cors"
@@ -12,34 +12,37 @@ import (
 )
 
 type Server struct {
-	Router          *gin.Engine
-	ProviderService *service.ProviderService
-	HistoryService  *service.HistoryService
-	parser          *parser.Parser
 	store           *store.Store
+	router          *gin.Engine
+	handler         *handler.Handler
+	queryParser     *parser.QueryParser
+	providerService *service.SearchProviderService
+	historyService  *service.HistoryService
 	config          *Config
 }
 
 func New(config *Config, useCors bool) (*Server, error) {
-	parser, err := parser.NewParser(config.parserCfg)
-
-	if err != nil {
-		return nil, fmt.Errorf("failed to create parser: %w", err)
-	}
-
 	store, err := store.New(config.storeCfg)
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to access the store: %w", err)
 	}
 
-	pService := service.NewProviderService(
-		parser,
+	qp, err := parser.NewQueryParser(config.bangParserCfg, config.shortcutParserCfg)
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to create parser: %w", err)
+	}
+
+	psvc := service.NewSearchProviderService(
+		qp.BangParser(),
 		store.SearchProviders,
 		config.serviceCgf,
 	)
 
-	hService := service.NewHistoryService(store.History)
+	hsvc := service.NewHistoryService(store.History)
+
+	handler := handler.NewHandler(qp, psvc, hsvc, "q")
 
 	router := gin.Default()
 
@@ -55,17 +58,18 @@ func New(config *Config, useCors bool) (*Server, error) {
 	}
 
 	return &Server{
-		Router:          router,
-		ProviderService: pService,
-		HistoryService:  hService,
-		parser:          parser,
+		providerService: psvc,
+		historyService:  hsvc,
+		queryParser:     qp,
+		router:          router,
+		handler:         handler,
 		store:           store,
 		config:          config,
 	}, nil
 }
 
 func Default(config *Config) (*Server, error) {
-	server, err := New(config, true)
+	server, err := New(config, false)
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to create server: %w", err)
@@ -75,17 +79,13 @@ func Default(config *Config) (*Server, error) {
 		return nil, fmt.Errorf("failed to conduct database migration: %w", err)
 	}
 
-	server.Router.GET("/search", func(ctx *gin.Context) {
-		handlers.Search(
-			ctx,
-			server.ProviderService,
-			server.HistoryService,
-		)
+	server.router.GET("/search", func(ctx *gin.Context) {
+		server.handler.Root(ctx)
 	})
 
 	return server, nil
 }
 
 func (sv *Server) Start() {
-	sv.Router.Run()
+	sv.router.Run()
 }

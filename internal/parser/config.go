@@ -1,14 +1,20 @@
 package parser
 
+import "fmt"
+
+var core = `\b\w+\b`
+
 type Config struct {
+	prefix           string
 	detectionPattern string
 	removalPattern   string
 }
 
-func NewConfig(detectionPattern, removalPattern string) *Config {
+func NewConfig(prefix string) *Config {
 	return &Config{
-		detectionPattern: detectionPattern,
-		removalPattern:   removalPattern,
+		prefix:           prefix,
+		detectionPattern: fmt.Sprintf(`%s(%s)`, prefix, core),
+		removalPattern:   fmt.Sprintf(`%s%s`, prefix, core),
 	}
 }
 

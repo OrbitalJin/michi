@@ -7,11 +7,13 @@ import (
 	"github.com/OrbitalJin/qmuxr/internal/store"
 )
 
-var parserConfig = parser.NewConfig(`!(\b\w+\b)`, `!\b\w+\b`)
+var bangParserConfig = parser.NewConfig("!")
+var shortcutParserConfig = parser.NewConfig("#")
+
 var storeConfig = store.NewConfig("./index.db")
 var serviceConfig = service.NewConfig(true, "g")
 
-var config = server.NewConfig(parserConfig, storeConfig, serviceConfig)
+var config = server.NewConfig(bangParserConfig, shortcutParserConfig, storeConfig, serviceConfig)
 
 func main() {
 

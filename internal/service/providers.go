@@ -12,15 +12,15 @@ import (
 	"github.com/OrbitalJin/qmuxr/internal/repository"
 )
 
-type ProviderService struct {
+type SearchProviderService struct {
 	parser *parser.Parser
 	repo   *repository.ProviderRepo
 	cache  *cache.Cache[string, *models.SearchProvider]
 	config *Config
 }
 
-func NewProviderService(p *parser.Parser, r *repository.ProviderRepo, config *Config) *ProviderService {
-	return &ProviderService{
+func NewSearchProviderService(p *parser.Parser, r *repository.ProviderRepo, config *Config) *SearchProviderService {
+	return &SearchProviderService{
 		parser: p,
 		repo:   r,
 		cache:  cache.New[string, *models.SearchProvider](),
@@ -28,7 +28,7 @@ func NewProviderService(p *parser.Parser, r *repository.ProviderRepo, config *Co
 	}
 }
 
-func (service *ProviderService) GetByTag(t string) (*models.SearchProvider, error) {
+func (service *SearchProviderService) GetByTag(t string) (*models.SearchProvider, error) {
 	provider, ok := service.cache.Load(t)
 
 	if ok {
@@ -36,7 +36,6 @@ func (service *ProviderService) GetByTag(t string) (*models.SearchProvider, erro
 	}
 
 	provider, err := service.repo.GetByTag(t)
-	fmt.Println(provider, err)
 
 	if err == nil && provider != nil {
 		service.cache.Store(t, provider)
@@ -45,7 +44,7 @@ func (service *ProviderService) GetByTag(t string) (*models.SearchProvider, erro
 	return provider, err
 }
 
-func (service *ProviderService) CollectAll(v string) (*[]*models.SearchProvider, error) {
+func (service *SearchProviderService) Collect(v string) (*[]*models.SearchProvider, error) {
 	result, err := service.parser.Collect(v)
 
 	if err != nil {
@@ -71,7 +70,7 @@ func (service *ProviderService) CollectAll(v string) (*[]*models.SearchProvider,
 	return &sps, nil
 }
 
-func (service *ProviderService) CollectAndRank(v string) (*parser.Result, *models.SearchProvider, error) {
+func (service *SearchProviderService) CollectAndRank(v string) (*parser.Result, *models.SearchProvider, error) {
 	result, err := service.parser.Collect(v)
 
 	if err != nil {
@@ -82,13 +81,23 @@ func (service *ProviderService) CollectAndRank(v string) (*parser.Result, *model
 		return result, nil, nil
 	}
 
+	best := service.Rank(result)
+
+	return result, best, nil
+}
+
+func (service *SearchProviderService) Rank(result *parser.Result) *models.SearchProvider {
+	if result == nil {
+		return nil
+	}
+
 	var best *models.SearchProvider
 	bestRank := -1
 
 	for _, tag := range result.Matches {
 		p, err := service.GetByTag(tag)
 
-		if err != nil {
+		if err != nil || p == nil {
 			continue
 		}
 
@@ -98,10 +107,10 @@ func (service *ProviderService) CollectAndRank(v string) (*parser.Result, *model
 		}
 	}
 
-	return result, best, nil
+	return best
 }
 
-func (service *ProviderService) Resolve(query string, provider *models.SearchProvider) (*models.SearchProvider, *string, error) {
+func (service *SearchProviderService) Resolve(query string, provider *models.SearchProvider) (*models.SearchProvider, *string, error) {
 	if provider == nil {
 		return nil, nil, fmt.Errorf("provider cannot be nil.")
 	}
@@ -111,7 +120,7 @@ func (service *ProviderService) Resolve(query string, provider *models.SearchPro
 	return provider, &result, nil
 }
 
-func (service *ProviderService) ResolveWithFallback(query string, provider *models.SearchProvider) (*models.SearchProvider, *string, error) {
+func (service *SearchProviderService) ResolveWithFallback(query string, provider *models.SearchProvider) (*models.SearchProvider, *string, error) {
 	if provider != nil {
 		return service.Resolve(query, provider)
 	}
@@ -126,6 +135,6 @@ func (service *ProviderService) ResolveWithFallback(query string, provider *mode
 	return service.Resolve(query, p)
 }
 
-func (service *ProviderService) GetCfg() *Config {
+func (service *SearchProviderService) GetCfg() *Config {
 	return service.config
 }
