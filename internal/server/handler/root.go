@@ -13,16 +13,16 @@ import (
 )
 
 type Handler struct {
-	QueryParser     *parser.QueryParser
-	ProviderService *service.SearchProviderService
-	HistoryService  *service.HistoryService
+	QueryParser     parser.QueryParserIface
+	ProviderService service.SPServiceIface
+	HistoryService  service.HistoryServiceIface
 	QueryParam      string
 }
 
 func NewHandler(
-	qp *parser.QueryParser,
-	psvc *service.SearchProviderService,
-	hsvc *service.HistoryService,
+	qp parser.QueryParserIface,
+	psvc service.SPServiceIface,
+	hsvc service.HistoryServiceIface,
 	queryParam string,
 
 ) *Handler {

@@ -5,6 +5,12 @@ import (
 	"github.com/OrbitalJin/qmuxr/internal/repository"
 )
 
+type HistoryServiceIface interface {
+	Insert(entry *models.SearchHistoryEvent) error
+	GetRecentHistory(limit int) ([]models.SearchHistoryEvent, error)
+	DeleteEntry(id int) error
+}
+
 type HistoryService struct {
 	repo *repository.HistoryRepo
 }

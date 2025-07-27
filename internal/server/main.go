@@ -12,12 +12,12 @@ import (
 )
 
 type Server struct {
+	queryParser     parser.QueryParserIface
+	providerService service.SPServiceIface
+	historyService  service.HistoryServiceIface
 	store           *store.Store
 	router          *gin.Engine
 	handler         *handler.Handler
-	queryParser     *parser.QueryParser
-	providerService *service.SearchProviderService
-	historyService  *service.HistoryService
 	config          *Config
 }
 
@@ -58,12 +58,12 @@ func New(config *Config, useCors bool) (*Server, error) {
 	}
 
 	return &Server{
+		queryParser:     qp,
 		providerService: psvc,
 		historyService:  hsvc,
-		queryParser:     qp,
+		store:           store,
 		router:          router,
 		handler:         handler,
-		store:           store,
 		config:          config,
 	}, nil
 }

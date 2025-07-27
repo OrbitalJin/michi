@@ -12,15 +12,25 @@ import (
 	"github.com/OrbitalJin/qmuxr/internal/repository"
 )
 
-type SearchProviderService struct {
+type SPServiceIface interface {
+	GetByTag(t string) (*models.SearchProvider, error)
+	Collect(v string) ([]models.SearchProvider, error)
+	CollectAndRank(v string) (*parser.Result, *models.SearchProvider, error)
+	Rank(result *parser.Result) *models.SearchProvider
+	Resolve(query string, provider *models.SearchProvider) (*models.SearchProvider, *string, error)
+	ResolveWithFallback(query string, provider *models.SearchProvider) (*models.SearchProvider, *string, error)
+	GetCfg() *Config
+}
+
+type SPService struct {
 	parser *parser.Parser
 	repo   *repository.ProviderRepo
 	cache  *cache.Cache[string, *models.SearchProvider]
 	config *Config
 }
 
-func NewSearchProviderService(p *parser.Parser, r *repository.ProviderRepo, config *Config) *SearchProviderService {
-	return &SearchProviderService{
+func NewSearchProviderService(p *parser.Parser, r *repository.ProviderRepo, config *Config) *SPService {
+	return &SPService{
 		parser: p,
 		repo:   r,
 		cache:  cache.New[string, *models.SearchProvider](),
@@ -28,7 +38,7 @@ func NewSearchProviderService(p *parser.Parser, r *repository.ProviderRepo, conf
 	}
 }
 
-func (service *SearchProviderService) GetByTag(t string) (*models.SearchProvider, error) {
+func (service *SPService) GetByTag(t string) (*models.SearchProvider, error) {
 	provider, ok := service.cache.Load(t)
 
 	if ok {
@@ -44,7 +54,7 @@ func (service *SearchProviderService) GetByTag(t string) (*models.SearchProvider
 	return provider, err
 }
 
-func (service *SearchProviderService) Collect(v string) (*[]*models.SearchProvider, error) {
+func (service *SPService) Collect(v string) ([]models.SearchProvider, error) {
 	result, err := service.parser.Collect(v)
 
 	if err != nil {
@@ -55,22 +65,22 @@ func (service *SearchProviderService) Collect(v string) (*[]*models.SearchProvid
 		return nil, nil
 	}
 
-	var sps []*models.SearchProvider
+	var sps []models.SearchProvider
 
 	for _, tag := range result.Matches {
 		p, err := service.GetByTag(tag)
 
-		if err != nil {
+		if err != nil || p == nil {
 			continue
 		}
 
-		sps = append(sps, p)
+		sps = append(sps, *p)
 	}
 
-	return &sps, nil
+	return sps, nil
 }
 
-func (service *SearchProviderService) CollectAndRank(v string) (*parser.Result, *models.SearchProvider, error) {
+func (service *SPService) CollectAndRank(v string) (*parser.Result, *models.SearchProvider, error) {
 	result, err := service.parser.Collect(v)
 
 	if err != nil {
@@ -86,7 +96,7 @@ func (service *SearchProviderService) CollectAndRank(v string) (*parser.Result, 
 	return result, best, nil
 }
 
-func (service *SearchProviderService) Rank(result *parser.Result) *models.SearchProvider {
+func (service *SPService) Rank(result *parser.Result) *models.SearchProvider {
 	if result == nil {
 		return nil
 	}
@@ -110,7 +120,7 @@ func (service *SearchProviderService) Rank(result *parser.Result) *models.Search
 	return best
 }
 
-func (service *SearchProviderService) Resolve(query string, provider *models.SearchProvider) (*models.SearchProvider, *string, error) {
+func (service *SPService) Resolve(query string, provider *models.SearchProvider) (*models.SearchProvider, *string, error) {
 	if provider == nil {
 		return nil, nil, fmt.Errorf("provider cannot be nil.")
 	}
@@ -120,7 +130,7 @@ func (service *SearchProviderService) Resolve(query string, provider *models.Sea
 	return provider, &result, nil
 }
 
-func (service *SearchProviderService) ResolveWithFallback(query string, provider *models.SearchProvider) (*models.SearchProvider, *string, error) {
+func (service *SPService) ResolveWithFallback(query string, provider *models.SearchProvider) (*models.SearchProvider, *string, error) {
 	if provider != nil {
 		return service.Resolve(query, provider)
 	}
@@ -135,6 +145,6 @@ func (service *SearchProviderService) ResolveWithFallback(query string, provider
 	return service.Resolve(query, p)
 }
 
-func (service *SearchProviderService) GetCfg() *Config {
+func (service *SPService) GetCfg() *Config {
 	return service.config
 }

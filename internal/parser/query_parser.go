@@ -4,6 +4,10 @@ import (
 	"strings"
 )
 
+type QueryParserIface interface {
+	ParseAction(query string) *QueryAction
+}
+
 type QueryParser struct {
 	bangParser     *Parser
 	shortcutParser *Parser
