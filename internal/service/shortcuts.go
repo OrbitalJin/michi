@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/OrbitalJin/qmuxr/internal/cache"
 	"github.com/OrbitalJin/qmuxr/internal/models"
 	"github.com/OrbitalJin/qmuxr/internal/repository"
 )
@@ -12,12 +13,14 @@ type ShortcutServiceIface interface {
 }
 
 type ShortcutService struct {
-	repo repository.ShortcutsRepoIface
+	repo  repository.ShortcutsRepoIface
+	cache *cache.Cache[string, *models.Shortcut]
 }
 
 func NewShortcutService(repo repository.ShortcutsRepoIface) *ShortcutService {
 	return &ShortcutService{
-		repo: repo,
+		repo:  repo,
+		cache: cache.New[string, *models.Shortcut](),
 	}
 }
 
@@ -26,7 +29,22 @@ func (service *ShortcutService) Insert(shortcut *models.Shortcut) error {
 }
 
 func (service *ShortcutService) GetFromAlias(alias string) (*models.Shortcut, error) {
-	return service.repo.GetFromAlias(alias)
+	shortcut, ok := service.cache.Load(alias)
+
+	if ok {
+		return shortcut, nil
+	}
+
+	shortcut, err := service.repo.GetFromAlias(alias)
+
+	if err != nil {
+		return nil, err
+	}
+
+	service.cache.Store(alias, shortcut)
+
+	return shortcut, nil
+
 }
 
 func (service *ShortcutService) Delete(id int) error {

@@ -102,7 +102,7 @@ Once configured, simply type into your browser's address bar:
 ## Features 
 
 ## Shortcuts
-- [ ] Cache
+- [x] Cache
 - [x] Handler function
 - [x] Service
 - [x] Repository
