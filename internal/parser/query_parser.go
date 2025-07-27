@@ -58,7 +58,7 @@ func (qd *QueryParser) ParseAction(query string) *QueryAction {
 
 	// Regular search
 	return &QueryAction{
-		Type: BANG,
+		Type: DEFAULT,
 		Result: &Result{
 			Query: trimmed,
 		},

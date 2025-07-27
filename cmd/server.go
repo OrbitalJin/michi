@@ -8,7 +8,7 @@ import (
 )
 
 var bangParserConfig = parser.NewConfig("!")
-var shortcutParserConfig = parser.NewConfig("#")
+var shortcutParserConfig = parser.NewConfig("@")
 
 var storeConfig = store.NewConfig("./index.db")
 var serviceConfig = service.NewConfig(true, "g")

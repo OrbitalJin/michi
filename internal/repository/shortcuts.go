@@ -36,7 +36,7 @@ func (repo *ShortcutsRepo) Migrate() error {
 
 func (repo *ShortcutsRepo) Insert(shortcut *models.Shortcut) error {
 	stmt := `
-		INSERT INTO shortcuts 
+		INSERT INTO shortcuts
 		(alias, url)
 		VALUES (?, ?);
 	`
@@ -55,7 +55,7 @@ func (repo *ShortcutsRepo) GetFromAlias(alias string) (*models.Shortcut, error) 
 	)
 
 	if err == sql.ErrNoRows {
-		return nil, nil
+		return nil, nil // Correctly returns nil, nil for no rows found
 	}
 
 	if err != nil {

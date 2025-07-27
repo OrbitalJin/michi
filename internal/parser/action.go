@@ -1,10 +1,10 @@
 package parser
 
 const (
-	BANG = iota
+	DEFAULT = iota
+	BANG
 	SHORTCUT
 	SESSION
-	SEARCH
 )
 
 type QueryAction struct {

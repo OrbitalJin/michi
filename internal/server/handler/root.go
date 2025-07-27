@@ -1,103 +1,51 @@
 package handler
 
 import (
-	"fmt"
 	"log"
 	"net/http"
-	"time"
 
-	"github.com/OrbitalJin/qmuxr/internal/models"
 	"github.com/OrbitalJin/qmuxr/internal/parser"
-	"github.com/OrbitalJin/qmuxr/internal/service"
 	"github.com/gin-gonic/gin"
 )
-
-type Handler struct {
-	QueryParser     parser.QueryParserIface
-	ProviderService service.SPServiceIface
-	HistoryService  service.HistoryServiceIface
-	QueryParam      string
-}
-
-func NewHandler(
-	qp parser.QueryParserIface,
-	psvc service.SPServiceIface,
-	hsvc service.HistoryServiceIface,
-	queryParam string,
-
-) *Handler {
-
-	return &Handler{
-		QueryParser:     qp,
-		ProviderService: psvc,
-		HistoryService:  hsvc,
-		QueryParam:      queryParam,
-	}
-}
 
 func (h *Handler) Root(ctx *gin.Context) {
 	query := ctx.Query(h.QueryParam)
 
 	if query == "" {
-		ctx.JSON(
+		respondWithError(
+			ctx,
 			http.StatusBadRequest,
-			gin.H{"error": "Query parameter 'q' is required."})
+			"Root: Query parameter '%s' is required. No query provided.",
+			"Query parameter 'q' is required.",
+			nil,
+			h.QueryParam,
+		)
 		return
 	}
 
 	action := h.QueryParser.ParseAction(query)
 
+	log.Println(action.Type)
+
 	switch action.Type {
+
 	case parser.BANG:
-		{
-			h.handleBang(ctx, action.Result)
-		}
+		h.handleBang(ctx, action)
+
 	case parser.SHORTCUT:
-		{
-			log.Println("shortcut!")
-		}
-	}
-}
+		h.handleShortcut(ctx, action)
 
-func (h *Handler) handleBang(ctx *gin.Context, result *parser.Result) {
-	best := h.ProviderService.Rank(result)
+	case parser.DEFAULT:
+		h.handleDefaultSearch(ctx, action)
 
-	provider, redirect, err := h.ProviderService.ResolveWithFallback(result.Query, best)
-
-	if err != nil {
-		log.Printf(
-			"failed to resolve redirect for query '%s' with provider '%s': %v",
-			result.Query,
-			provider.Tag,
-			err,
-		)
-		ctx.JSON(
-			http.StatusInternalServerError,
-			gin.H{"error": "Could not determine search destination. Please try again later."},
-		)
-		return
-	}
-
-	ctx.Redirect(http.StatusFound, *redirect)
-
-	if h.ProviderService.GetCfg().ShouldKeepTrack() {
-		entry := &models.SearchHistoryEvent{
-			Query:       result.Query,
-			ProviderID:  provider.ID,
-			ProviderTag: provider.Tag,
-			Timestamp:   time.Now(),
-		}
-
-		go h.logSearchHistoryAsync(entry)
-	}
-}
-
-func (h *Handler) logSearchHistoryAsync(entry *models.SearchHistoryEvent) {
-	if err := h.HistoryService.Insert(entry); err != nil {
-		log.Printf(
-			"failed to insert search history entry for query '%s': %v",
-			entry.Query,
-			fmt.Errorf("insertion error: %w", err),
+	default:
+		respondWithError(
+			ctx,
+			http.StatusBadRequest,
+			"Root: Unhandled action type '%v' for query: '%s'. This indicates a parser issue or malformed query.",
+			"Couldn't understand your query. Please check the format.",
+			nil,
+			action.Type, query,
 		)
 	}
 }

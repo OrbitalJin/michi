@@ -15,9 +15,9 @@ type Server struct {
 	providerService service.SPServiceIface
 	historyService  service.HistoryServiceIface
 	shortcutService service.ShortcutServiceIface
+	handler         handler.HandlerIface
 	store           *store.Store
 	router          *gin.Engine
-	handler         *handler.Handler
 	config          *Config
 }
 
@@ -44,7 +44,7 @@ func New(config *Config, useCors bool) (*Server, error) {
 
 	scsvc := service.NewShortcutService(store.Shortcuts)
 
-	handler := handler.NewHandler(qp, psvc, hsvc, "q")
+	handler := handler.NewHandler(qp, psvc, hsvc, scsvc, "q")
 
 	router := gin.Default()
 

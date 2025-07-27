@@ -102,7 +102,8 @@ Once configured, simply type into your browser's address bar:
 ## Features 
 
 ## Shortcuts
-- [ ] Handler function
+- [ ] Cache
+- [x] Handler function
 - [x] Service
 - [x] Repository
 - [x] Parse them seperately from bangs

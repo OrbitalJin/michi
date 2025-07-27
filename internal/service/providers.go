@@ -18,7 +18,8 @@ type SPServiceIface interface {
 	CollectAndRank(v string) (*parser.Result, *models.SearchProvider, error)
 	Rank(result *parser.Result) *models.SearchProvider
 	Resolve(query string, provider *models.SearchProvider) (*models.SearchProvider, *string, error)
-	ResolveWithFallback(query string, provider *models.SearchProvider) (*models.SearchProvider, *string, error)
+	ResolveAndFallback(query string, provider *models.SearchProvider) (*models.SearchProvider, *string, error)
+	ResolveWithFallback(query string) (*models.SearchProvider, *string, error)
 	GetCfg() *Config
 }
 
@@ -139,11 +140,11 @@ func (service *SPService) Resolve(
 	}
 
 	encoded := url.QueryEscape(query)
-	result := strings.Replace(provider.URL, "{{{s}}}", encoded, 1)
-	return provider, &result, nil
+	url := strings.Replace(provider.URL, "{{{s}}}", encoded, 1)
+	return provider, &url, nil
 }
 
-func (service *SPService) ResolveWithFallback(
+func (service *SPService) ResolveAndFallback(
 	query string,
 	provider *models.SearchProvider,
 ) (*models.SearchProvider, *string, error) {
@@ -152,6 +153,17 @@ func (service *SPService) ResolveWithFallback(
 		return service.Resolve(query, provider)
 	}
 
+	p, err := service.GetByTag(service.config.defaultProvider)
+
+	if err != nil {
+		log.Println("no default provider available.")
+		return nil, nil, err
+	}
+
+	return service.Resolve(query, p)
+}
+
+func (service *SPService) ResolveWithFallback(query string) (*models.SearchProvider, *string, error) {
 	p, err := service.GetByTag(service.config.defaultProvider)
 
 	if err != nil {
