@@ -18,3 +18,11 @@ func NewHistoryService(repo *repository.HistoryRepo) *HistoryService {
 func (service *HistoryService) Insert(entry *models.SearchHistoryEvent) error {
 	return service.repo.Insert(entry)
 }
+
+func (service *HistoryService) GetRecentHistory(limit int) ([]models.SearchHistoryEvent, error) {
+	return service.repo.GetRecentHistory(limit)
+}
+
+func (service *HistoryService) DeleteEntry(id int) error {
+	return service.repo.DeleteEntry(id)
+}

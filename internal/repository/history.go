@@ -1,4 +1,4 @@
-package repository // This package now called `repository`
+package repository
 
 import (
 	"database/sql"
@@ -91,6 +91,12 @@ func (r *HistoryRepo) GetRecentHistory(limit int) ([]models.SearchHistoryEvent, 
 	}
 
 	return history, nil
+}
+
+func (hr *HistoryRepo) DeleteEntry(id int) error {
+	stmt := `DELETE FROM search_history WHERE id = ?;`
+	_, err := hr.db.Exec(stmt, id)
+	return err
 }
 
 func (hr *HistoryRepo) DeleteOldHistory(beforeTime time.Time) error {
