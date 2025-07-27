@@ -5,8 +5,8 @@ A blazing-fast, local search multiplexer for your browser's default search. Navi
 ## Features
 
 *   **Bang Search (`!keyword`):** Directly jump to your favorite search engines or websites with custom prefixes (e.g., `!g go modules`, `!yt cat videos`).
-*   **Web Shortcuts (`qmx#shortcut_name`):** Create personalized, quick links to any URL (e.g., `qmx#portal` to open your school portal).
-*   **Session Launcher (`qmx@session_name`):** Open multiple predefined tabs with a single command (e.g., `qmx@dev` to open GitHub, Stack Overflow, and your dev server).
+*   **Web Shortcuts (`#shortcut_name`):** Create personalized, quick links to any URL (e.g., `#portal` to open your school portal).
+*   **Session Launcher (`@session_name`):** Open multiple predefined tabs with a single command (e.g., `@dev` to open GitHub, Stack Overflow, and your dev server).
 *   **Local & Private:** Your configurations are stored locally in a SQLite database, never leaving your machine.
 *   **Blazing Fast:** Runs as a tiny background service, providing instant redirects without any network latency or browser pop-up blockers.
 *   **Cross-Platform:** Built with Go, available for Linux, macOS, and Windows.
@@ -66,11 +66,11 @@ Once configured, simply type into your browser's address bar:
     *   `!yt epic jdm cars drifting`
     *   `!gh qmuxr`
 *   **Web Shortcut:**
-    *   `qmx#portal`
-    *   `qmx#book`
+    *   `#portal`
+    *   `#book`
 *   **Session Launcher:**
-    *   `qmx@dev`
-    *   `qmx@learning`
+    *   `@dev`
+    *   `@learning`
 
 ---
 

@@ -86,6 +86,6 @@ func Default(config *Config) (*Server, error) {
 	return server, nil
 }
 
-func (sv *Server) Start() {
-	sv.router.Run()
+func (sv *Server) Start(port string) {
+	sv.router.Run(port)
 }
