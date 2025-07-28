@@ -94,9 +94,11 @@ Once configured, simply type into your browser's address bar:
 ---
 
 ## Ideas
-- [ ] "Shortcuts" e.g. repos => github.com/johndoe?tab=repositories
-- [ ] Analytics
 - [ ] Settings dashboard or cli
+- [ ] Sessions
+- [ ] Analytics
+- [x] Shortcuts e.g. repos => github.com/johndoe?tab=repositories
+- [x] Bangs
 - [x] History
 
 ## Features 
