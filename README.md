@@ -102,7 +102,7 @@ Once configured, simply type into your browser's address bar:
 - [x] History
 
 ## Features 
-- [ ] Schema (html/json or relational)
+- [x] Schema (html/json or relational)
 - [ ] Repository
 - [ ] Service
 
