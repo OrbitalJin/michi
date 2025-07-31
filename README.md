@@ -100,9 +100,13 @@ Once configured, simply type into your browser's address bar:
 - [x] Shortcuts e.g. repos => github.com/johndoe?tab=repositories
 - [x] Bangs
 - [x] History
+- [ ] Apps like translate e.g. $translate
+- [ ] embedded templates
+- [ ] seperate router with templates & handlers
 
 ## Features 
 - [x] Schema (html/json or relational)
+- [ ] Marshall
 - [ ] Repository
 - [ ] Service
 

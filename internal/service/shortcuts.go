@@ -44,7 +44,6 @@ func (service *ShortcutService) GetFromAlias(alias string) (*models.Shortcut, er
 	service.cache.Store(alias, shortcut)
 
 	return shortcut, nil
-
 }
 
 func (service *ShortcutService) Delete(id int) error {

@@ -55,7 +55,7 @@ func (repo *ShortcutsRepo) GetFromAlias(alias string) (*models.Shortcut, error) 
 	)
 
 	if err == sql.ErrNoRows {
-		return nil, nil // Correctly returns nil, nil for no rows found
+		return nil, nil
 	}
 
 	if err != nil {

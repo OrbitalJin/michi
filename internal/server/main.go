@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+
 	"github.com/OrbitalJin/qmuxr/internal/parser"
 	"github.com/OrbitalJin/qmuxr/internal/server/handler"
 	"github.com/OrbitalJin/qmuxr/internal/service"
@@ -45,6 +46,21 @@ func New(config *Config, useCors bool) (*Server, error) {
 	scsvc := service.NewShortcutService(store.Shortcuts)
 
 	handler := handler.NewHandler(qp, psvc, hsvc, scsvc, "q")
+
+	// urls := []string{
+	// 	"https://github.com",
+	// 	"https://wikipedia.com",
+	// 	"https://t3.chat",
+	// }
+
+	// store.Sessions.Insert(&models.Session{
+	// 	Alias: "dev",
+	// 	URLs:  urls,
+	// })
+
+	session, err := store.Sessions.GetFromAlias("dev")
+
+	fmt.Println(session)
 
 	router := gin.Default()
 
