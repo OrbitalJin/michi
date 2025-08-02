@@ -17,7 +17,7 @@ var config = server.NewConfig(bangParserConfig, shortcutParserConfig, storeConfi
 
 func main() {
 
-	qmuxr, err := server.Default(config)
+	qmuxr, err := server.New(config)
 	if err != nil {
 		panic(err)
 	}

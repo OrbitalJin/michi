@@ -4,11 +4,10 @@ import (
 	"fmt"
 
 	"github.com/OrbitalJin/qmuxr/internal/parser"
+	"github.com/OrbitalJin/qmuxr/internal/router"
 	"github.com/OrbitalJin/qmuxr/internal/server/handler"
 	"github.com/OrbitalJin/qmuxr/internal/service"
 	"github.com/OrbitalJin/qmuxr/internal/store"
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
 )
 
 type Server struct {
@@ -17,16 +16,20 @@ type Server struct {
 	historyService  service.HistoryServiceIface
 	shortcutService service.ShortcutServiceIface
 	handler         handler.HandlerIface
+	router          router.RouterIface
 	store           *store.Store
-	router          *gin.Engine
 	config          *Config
 }
 
-func New(config *Config, useCors bool) (*Server, error) {
+func New(config *Config) (*Server, error) {
 	store, err := store.New(config.storeCfg)
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to access the store: %w", err)
+	}
+
+	if err = store.Migrate(); err != nil {
+		return nil, fmt.Errorf("failed to conduct database migration: %w", err)
 	}
 
 	qp, err := parser.NewQueryParser(config.bangParserCfg, config.shortcutParserCfg)
@@ -47,33 +50,13 @@ func New(config *Config, useCors bool) (*Server, error) {
 
 	handler := handler.NewHandler(qp, psvc, hsvc, scsvc, "q")
 
-	// urls := []string{
-	// 	"https://github.com",
-	// 	"https://wikipedia.com",
-	// 	"https://t3.chat",
-	// }
+	router, err := router.NewRouter(handler)
 
-	// store.Sessions.Insert(&models.Session{
-	// 	Alias: "dev",
-	// 	URLs:  urls,
-	// })
-
-	session, err := store.Sessions.GetFromAlias("dev")
-
-	fmt.Println(session)
-
-	router := gin.Default()
-
-	if useCors {
-		router.Use(cors.New(cors.Config{
-			AllowOrigins:     []string{"http://localhost:5173"},
-			AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
-			AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type"},
-			ExposeHeaders:    []string{"Content-Length"},
-			AllowCredentials: true,
-			MaxAge:           300,
-		}))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create router: %w", err)
 	}
+
+	router.Route()
 
 	return &Server{
 		queryParser:     qp,
@@ -87,24 +70,6 @@ func New(config *Config, useCors bool) (*Server, error) {
 	}, nil
 }
 
-func Default(config *Config) (*Server, error) {
-	server, err := New(config, false)
-
-	if err != nil {
-		return nil, fmt.Errorf("failed to create server: %w", err)
-	}
-
-	if err = server.store.Migrate(); err != nil {
-		return nil, fmt.Errorf("failed to conduct database migration: %w", err)
-	}
-
-	server.router.GET("/search", func(ctx *gin.Context) {
-		server.handler.Root(ctx)
-	})
-
-	return server, nil
-}
-
-func (sv *Server) Start(port string) {
-	sv.router.Run(port)
+func (server *Server) Start(port string) {
+	server.router.Up(port)
 }

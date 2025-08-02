@@ -11,6 +11,10 @@ import (
 
 type HandlerIface interface {
 	Root(ctx *gin.Context)
+	completeSearchRequest(ctx *gin.Context, redirectURL string, result *parser.Result, provider *models.SearchProvider)
+	handleBang(ctx *gin.Context, action *parser.QueryAction)
+	handleShortcut(ctx *gin.Context, action *parser.QueryAction)
+	handleDefaultSearch(ctx *gin.Context, action *parser.QueryAction)
 }
 
 type Handler struct {
@@ -37,6 +41,16 @@ func NewHandler(
 		ShortcutService: scsvc,
 		QueryParam:      queryParam,
 	}
+}
+
+func (h *Handler) MultiRedirect(ctx *gin.Context) {
+	urls := []string{
+		"https://github.com/OrbitalJin/qmuxr",
+		"https://github.com/OrbitalJin/qmuxr/issues",
+		"https://github.com/OrbitalJin/qmuxr/discussions",
+	}
+
+	ctx.HTML(http.StatusOK, "session.html", gin.H{"URLs": urls})
 }
 
 func (h *Handler) completeSearchRequest(
