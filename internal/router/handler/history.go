@@ -26,7 +26,7 @@ func (h *Handler) logSearchHistoryAsync(result *parser.Result, provider *models.
 		Timestamp:   time.Now(),
 	}
 
-	if err := h.HistoryService.Insert(entry); err != nil {
+	if err := h.historyService.Insert(entry); err != nil {
 		log.Printf(
 			"failed to insert search history entry for query '%s': %v",
 			entry.Query,

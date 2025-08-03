@@ -25,7 +25,7 @@ func (h *Handler) handleShortcut(ctx *gin.Context, action *parser.QueryAction) {
 
 	alias := result.Matches[0]
 
-	shortcut, err := h.ShortcutService.GetFromAlias(alias)
+	shortcut, err := h.shortcutService.GetFromAlias(alias)
 
 	if err != nil {
 		respondWithError(

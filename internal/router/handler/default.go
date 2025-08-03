@@ -20,7 +20,7 @@ func (h *Handler) handleDefaultSearch(ctx *gin.Context, action *parser.QueryActi
 		return
 	}
 
-	p, url, err := h.ProviderService.ResolveWithFallback(action.RawQuery)
+	p, url, err := h.providerService.ResolveWithFallback(action.RawQuery)
 
 	if err != nil || url == nil {
 		providerTag := "N/A"

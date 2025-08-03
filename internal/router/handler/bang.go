@@ -22,9 +22,9 @@ func (h *Handler) handleBang(ctx *gin.Context, action *parser.QueryAction) {
 		return
 	}
 
-	best := h.ProviderService.Rank(result)
+	best := h.providerService.Rank(result)
 
-	provider, redirect, err := h.ProviderService.ResolveAndFallback(
+	provider, redirect, err := h.providerService.ResolveAndFallback(
 		result.Query,
 		best,
 	)

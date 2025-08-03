@@ -109,7 +109,7 @@ Once configured, simply type into your browser's address bar:
 - [x] Repository
 - [x] Service
 - [x] Parser
-- [ ] Handler
+- [x] Handler
 
 ## Shortcuts
 - [x] Cache

@@ -50,7 +50,8 @@ func New(config *Config) (*Server, error) {
 
 	hsvc := service.NewHistoryService(store.History)
 	scsvc := service.NewShortcutService(store.Shortcuts)
-	handler := handler.NewHandler(qp, psvc, hsvc, scsvc, "q")
+	seshsvc := service.NewSessionService(store.Sessions)
+	handler := handler.NewHandler(qp, psvc, hsvc, scsvc, seshsvc, "q")
 
 	router, err := router.NewRouter(handler)
 

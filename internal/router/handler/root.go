@@ -23,7 +23,7 @@ func (h *Handler) Root(ctx *gin.Context) {
 		return
 	}
 
-	action := h.QueryParser.ParseAction(query)
+	action := h.queryParser.ParseAction(query)
 
 	log.Println(action.Type)
 
@@ -34,6 +34,9 @@ func (h *Handler) Root(ctx *gin.Context) {
 
 	case parser.SHORTCUT:
 		h.handleShortcut(ctx, action)
+
+	case parser.SESSION:
+		h.handleSession(ctx, action)
 
 	case parser.DEFAULT:
 		h.handleDefaultSearch(ctx, action)

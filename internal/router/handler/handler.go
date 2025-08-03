@@ -19,10 +19,11 @@ type HandlerIface interface {
 }
 
 type Handler struct {
-	QueryParser     parser.QueryParserIface
-	ProviderService service.SPServiceIface
-	HistoryService  service.HistoryServiceIface
-	ShortcutService service.ShortcutServiceIface
+	queryParser     parser.QueryParserIface
+	providerService service.SPServiceIface
+	historyService  service.HistoryServiceIface
+	shortcutService service.ShortcutServiceIface
+	sessionService  service.SessionServiceIface
 	QueryParam      string
 }
 
@@ -31,15 +32,17 @@ func NewHandler(
 	psvc service.SPServiceIface,
 	hsvc service.HistoryServiceIface,
 	scsvc service.ShortcutServiceIface,
+	seshSvc service.SessionServiceIface,
 	queryParam string,
 
 ) *Handler {
 
 	return &Handler{
-		QueryParser:     qp,
-		ProviderService: psvc,
-		HistoryService:  hsvc,
-		ShortcutService: scsvc,
+		queryParser:     qp,
+		providerService: psvc,
+		historyService:  hsvc,
+		shortcutService: scsvc,
+		sessionService:  seshSvc,
 		QueryParam:      queryParam,
 	}
 }
@@ -53,7 +56,7 @@ func (h *Handler) completeSearchRequest(
 
 	ctx.Redirect(http.StatusFound, redirectURL)
 
-	if h.ProviderService.GetCfg().ShouldKeepTrack() {
+	if h.providerService.GetCfg().ShouldKeepTrack() {
 		go h.logSearchHistoryAsync(result, provider)
 	}
 }

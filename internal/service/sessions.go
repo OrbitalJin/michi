@@ -7,7 +7,6 @@ import (
 )
 
 type SessionServiceIface interface {
-	GetCfg() *Config
 	Insert(session *models.Session) error
 	GetFromAlias(alias string) (*models.Session, error)
 	GetAll() ([]models.Session, error)
@@ -64,4 +63,8 @@ func (s *SessionService) GetAll() ([]models.Session, error) {
 
 func (s *SessionService) Update(session *models.Session) error {
 	return s.repo.Update(session)
+}
+
+func (s *SessionService) Delete(id int) error {
+	return s.repo.Delete(id)
 }

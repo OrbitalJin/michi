@@ -14,7 +14,13 @@ var sesssionParserConfig = parser.NewConfig("#")
 var storeConfig = store.NewConfig("./index.db")
 var serviceConfig = service.NewConfig(true, "g")
 
-var config = server.NewConfig(bangParserConfig, shortcutParserConfig, sesssionParserConfig, storeConfig, serviceConfig)
+var config = server.NewConfig(
+	bangParserConfig,
+	shortcutParserConfig,
+	sesssionParserConfig,
+	storeConfig,
+	serviceConfig,
+)
 
 func main() {
 
