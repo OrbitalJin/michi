@@ -95,14 +95,14 @@ Once configured, simply type into your browser's address bar:
 
 ## Ideas
 - [ ] Settings dashboard or cli
-- [ ] Sessions
 - [ ] Analytics
+- [ ] Apps like translate e.g. $translate
 - [x] Shortcuts e.g. repos => github.com/johndoe?tab=repositories
 - [x] Bangs
 - [x] History
-- [ ] Apps like translate e.g. $translate
-- [ ] embedded templates
-- [ ] seperate router with templates & handlers
+- [x] Sessions
+- [x] embedded templates
+- [x] seperate router with templates & handlers
 
 ## Features 
 - [x] Schema (html/json or relational)

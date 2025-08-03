@@ -23,5 +23,5 @@ func respondWithError(
 
 	log.Printf(logMsgFormat, logArgs...)
 
-	ctx.JSON(statusCode, gin.H{"error": userMsg})
+	ctx.HTML(statusCode, "error.html", gin.H{"error": userMsg})
 }

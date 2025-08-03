@@ -47,6 +47,10 @@ func NewHandler(
 	}
 }
 
+func (h *Handler) ErrorHandler(ctx *gin.Context) {
+	ctx.HTML(http.StatusInternalServerError, "error.html", gin.H{"error": "Failed to load session: " + "not cool!!!"})
+}
+
 func (h *Handler) completeSearchRequest(
 	ctx *gin.Context,
 	redirectURL string,
