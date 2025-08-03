@@ -11,9 +11,10 @@ type QueryParserIface interface {
 type QueryParser struct {
 	bangParser     *Parser
 	shortcutParser *Parser
+	sessionParser  *Parser
 }
 
-func NewQueryParser(bpCfg, scpCfg *Config) (*QueryParser, error) {
+func NewQueryParser(bpCfg, scpCfg, seshCfg *Config) (*QueryParser, error) {
 	bp, err := NewParser(bpCfg)
 
 	if err != nil {
@@ -26,9 +27,16 @@ func NewQueryParser(bpCfg, scpCfg *Config) (*QueryParser, error) {
 		return nil, err
 	}
 
+	seshp, err := NewParser(seshCfg)
+
+	if err != nil {
+		return nil, err
+	}
+
 	return &QueryParser{
 		bangParser:     bp,
 		shortcutParser: scp,
+		sessionParser:  seshp,
 	}, nil
 }
 
@@ -51,6 +59,17 @@ func (qd *QueryParser) ParseAction(query string) *QueryAction {
 	if len(result.Matches) != 0 {
 		return &QueryAction{
 			Type:     SHORTCUT,
+			Result:   result,
+			RawQuery: trimmed,
+		}
+	}
+
+	result, _ = qd.sessionParser.Collect(trimmed)
+
+	// Sessions
+	if len(result.Matches) != 0 {
+		return &QueryAction{
+			Type:     SESSION,
 			Result:   result,
 			RawQuery: trimmed,
 		}

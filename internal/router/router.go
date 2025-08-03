@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/OrbitalJin/qmuxr/internal/server/handler"
+	"github.com/OrbitalJin/qmuxr/internal/router/handler"
 	"github.com/OrbitalJin/qmuxr/internal/templater"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -47,7 +47,6 @@ func NewRouter(handler *handler.Handler) (*Router, error) {
 
 func (r *Router) Route() {
 	r.Engine.GET("/search", r.handler.Root)
-	r.Engine.GET("/foo", r.handler.MultiRedirect)
 }
 
 func (r *Router) GetEngine() *gin.Engine {

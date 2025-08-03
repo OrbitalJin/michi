@@ -9,13 +9,15 @@ import (
 type Config struct {
 	bangParserCfg     *parser.Config
 	shortcutParserCfg *parser.Config
+	seshParserCfg     *parser.Config
 	storeCfg          *store.Config
 	serviceCgf        *service.Config
 }
 
 func NewConfig(
 	bpCfg,
-	scpCfg *parser.Config,
+	scpCfg,
+	seshCfg *parser.Config,
 	sCfg *store.Config,
 	svcCfg *service.Config,
 ) *Config {
@@ -23,6 +25,7 @@ func NewConfig(
 	return &Config{
 		bangParserCfg:     bpCfg,
 		shortcutParserCfg: scpCfg,
+		seshParserCfg:     seshCfg,
 		storeCfg:          sCfg,
 		serviceCgf:        svcCfg,
 	}

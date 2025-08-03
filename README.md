@@ -106,9 +106,10 @@ Once configured, simply type into your browser's address bar:
 
 ## Features 
 - [x] Schema (html/json or relational)
-- [ ] Marshall
-- [ ] Repository
-- [ ] Service
+- [x] Repository
+- [x] Service
+- [x] Parser
+- [ ] Handler
 
 ## Shortcuts
 - [x] Cache

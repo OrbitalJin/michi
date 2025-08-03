@@ -5,7 +5,7 @@ import (
 
 	"github.com/OrbitalJin/qmuxr/internal/parser"
 	"github.com/OrbitalJin/qmuxr/internal/router"
-	"github.com/OrbitalJin/qmuxr/internal/server/handler"
+	"github.com/OrbitalJin/qmuxr/internal/router/handler"
 	"github.com/OrbitalJin/qmuxr/internal/service"
 	"github.com/OrbitalJin/qmuxr/internal/store"
 )
@@ -32,7 +32,11 @@ func New(config *Config) (*Server, error) {
 		return nil, fmt.Errorf("failed to conduct database migration: %w", err)
 	}
 
-	qp, err := parser.NewQueryParser(config.bangParserCfg, config.shortcutParserCfg)
+	qp, err := parser.NewQueryParser(
+		config.bangParserCfg,
+		config.shortcutParserCfg,
+		config.seshParserCfg,
+	)
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to create parser: %w", err)
@@ -45,9 +49,7 @@ func New(config *Config) (*Server, error) {
 	)
 
 	hsvc := service.NewHistoryService(store.History)
-
 	scsvc := service.NewShortcutService(store.Shortcuts)
-
 	handler := handler.NewHandler(qp, psvc, hsvc, scsvc, "q")
 
 	router, err := router.NewRouter(handler)

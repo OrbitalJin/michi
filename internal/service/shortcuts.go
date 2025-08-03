@@ -25,7 +25,12 @@ func NewShortcutService(repo repository.ShortcutsRepoIface) *ShortcutService {
 }
 
 func (service *ShortcutService) Insert(shortcut *models.Shortcut) error {
-	return service.repo.Insert(shortcut)
+	if err := service.repo.Insert(shortcut); err != nil {
+		return err
+	}
+
+	service.cache.Store(shortcut.Alias, shortcut)
+	return nil
 }
 
 func (service *ShortcutService) GetFromAlias(alias string) (*models.Shortcut, error) {
