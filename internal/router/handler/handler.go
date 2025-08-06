@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/OrbitalJin/qmuxr/internal/models"
@@ -47,8 +48,21 @@ func NewHandler(
 	}
 }
 
-func (h *Handler) ErrorHandler(ctx *gin.Context) {
-	ctx.HTML(http.StatusInternalServerError, "error.html", gin.H{"error": "Failed to load session: " + "not cool!!!"})
+func (h *Handler) Favicon(ctx *gin.Context) {
+	ctx.AbortWithStatus(http.StatusNoContent)
+}
+
+func (h *Handler) Error(ctx *gin.Context, message string) {
+	log.Println(message)
+	ctx.HTML(http.StatusInternalServerError, "error.html", gin.H{"error": "Failed to load session: " + message})
+}
+
+func (h *Handler) SessionOpened(ctx *gin.Context) {
+	ctx.HTML(http.StatusOK, "session_success.html",
+		gin.H{
+			"DefaultEngine": "https://www.google.com/",
+		},
+	)
 }
 
 func (h *Handler) completeSearchRequest(

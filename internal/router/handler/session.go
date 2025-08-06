@@ -59,7 +59,7 @@ func (h *Handler) handleSession(ctx *gin.Context, action *parser.QueryAction) {
 
 	ctx.HTML(
 		http.StatusOK,
-		"session.html",
+		"session_open.html",
 		gin.H{
 			"URLs": urls,
 		},

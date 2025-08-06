@@ -47,8 +47,9 @@ func NewRouter(handler *handler.Handler) (*Router, error) {
 
 func (r *Router) Route() {
 	r.Engine.GET("/search", r.handler.Root)
-	r.Engine.GET("/error", r.handler.ErrorHandler)
-
+	r.Engine.GET("/error", r.handler.Error)
+	r.Engine.GET("/session_success", r.handler.SessionOpened)
+	r.Engine.GET("/favicon.ico", r.handler.Favicon)
 }
 
 func (r *Router) GetEngine() *gin.Engine {

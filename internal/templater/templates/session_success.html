@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success! - qmuxr</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Shared styles with your error.html for consistency */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0; 
+            background-color: #1a1a1a; 
+            min-height: 100vh;
+            padding: 0; 
+        }
+
+        .app-header {
+            position: fixed; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            z-index: 1000; 
+        }
+
+        .brand-logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #007bff; /* Use your primary brand color */
+            text-decoration: none;
+        }
+        .brand-logo:hover {
+            color: #0056b3;
+        }
+
+        .main-content-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px; 
+        }
+
+        .success-container { /* Renamed from error-container */
+            background-color: #2c2c2c;
+            border-radius: 8px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #f0f0f0; 
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 1.1em;
+            color: #b0b0b0;
+            margin-bottom: 25px;
+        }
+
+        .action-button { /* Renamed from home-link, to be more generic */
+            display: inline-block;
+            background-color: #007bff; /* Primary brand color */
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .action-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive adjustments (copied from original) */
+        @media (max-width: 600px) {
+            .app-header {
+                padding: 10px 15px;
+            }
+            .brand-logo {
+                font-size: 1.5em;
+            }
+            .success-container { /* Renamed */
+                padding: 30px 20px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            p {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <a href="{{ .DefaultEngine }}" class="brand-logo">qmuxr</a>
+    </header>
+
+    <div class="main-content-wrapper">
+        <div class="success-container">
+            <h1>Session Opened!</h1>
+            <p>
+                Your session URLs have been opened in new tabs.
+                You may now safely close this page.
+            </p>
+        <a class="action-button" href="{{ .DefaultEngine }}">Leave</a>
+        </div>
+    </div>
+</body>
+</html>
