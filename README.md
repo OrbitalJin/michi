@@ -97,6 +97,8 @@ Once configured, simply type into your browser's address bar:
 - [ ] Settings dashboard or cli
 - [ ] Analytics
 - [ ] Apps like translate e.g. $translate
+- [ ] Hydrate local user's copy of the database from embedded snapshot
+- [ ] Make sure to only store history in the local copy of the database
 - [x] Shortcuts e.g. repos => github.com/johndoe?tab=repositories
 - [x] Bangs
 - [x] History

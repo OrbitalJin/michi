@@ -24,7 +24,7 @@ func (h *Handler) handleSession(ctx *gin.Context, action *parser.QueryAction) {
 
 	alias := result.Matches[0]
 
-	session, err := h.sessionService.GetFromAlias(alias)
+	session, err := h.services.GetSessionService().GetFromAlias(alias)
 
 	if err != nil {
 		respondWithError(

@@ -5,6 +5,7 @@ import (
 	"github.com/OrbitalJin/michi/internal/server"
 	"github.com/OrbitalJin/michi/internal/service"
 	"github.com/OrbitalJin/michi/internal/store"
+	"github.com/gin-gonic/gin"
 )
 
 var bangParserConfig = parser.NewConfig("!")
@@ -22,12 +23,17 @@ var config = server.NewConfig(
 	serviceConfig,
 )
 
-func main() {
+func serve(port string) {
 
 	michi, err := server.New(config)
 	if err != nil {
 		panic(err)
 	}
 
-	michi.Start(":5980")
+	michi.Start(port)
+}
+
+func main() {
+	gin.SetMode(gin.ReleaseMode)
+	serve(":5980")
 }

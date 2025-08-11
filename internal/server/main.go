@@ -11,14 +11,12 @@ import (
 )
 
 type Server struct {
-	queryParser     parser.QueryParserIface
-	providerService service.SPServiceIface
-	historyService  service.HistoryServiceIface
-	shortcutService service.ShortcutServiceIface
-	handler         handler.HandlerIface
-	router          router.RouterIface
-	store           *store.Store
-	config          *Config
+	queryParser parser.QueryParserIface
+	handler     handler.HandlerIface
+	router      router.RouterIface
+	services    *service.Services
+	store       *store.Store
+	config      *Config
 }
 
 func New(config *Config) (*Server, error) {
@@ -47,11 +45,12 @@ func New(config *Config) (*Server, error) {
 		store.SearchProviders,
 		config.serviceCgf,
 	)
-
 	hsvc := service.NewHistoryService(store.History)
 	scsvc := service.NewShortcutService(store.Shortcuts)
 	seshsvc := service.NewSessionService(store.Sessions)
-	handler := handler.NewHandler(qp, psvc, hsvc, scsvc, seshsvc, "q")
+	services := service.NewServices(psvc, hsvc, seshsvc, scsvc)
+
+	handler := handler.NewHandler(qp, services, "q")
 
 	router, err := router.NewRouter(handler)
 
@@ -62,14 +61,12 @@ func New(config *Config) (*Server, error) {
 	router.Route()
 
 	return &Server{
-		queryParser:     qp,
-		providerService: psvc,
-		historyService:  hsvc,
-		shortcutService: scsvc,
-		store:           store,
-		router:          router,
-		handler:         handler,
-		config:          config,
+		queryParser: qp,
+		store:       store,
+		services:    services,
+		router:      router,
+		handler:     handler,
+		config:      config,
 	}, nil
 }
 

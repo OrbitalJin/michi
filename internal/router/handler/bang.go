@@ -9,6 +9,7 @@ import (
 
 func (h *Handler) handleBang(ctx *gin.Context, action *parser.QueryAction) {
 	result := action.Result
+	service := h.services.GetProvidersService()
 
 	if result == nil {
 		respondWithError(
@@ -22,9 +23,9 @@ func (h *Handler) handleBang(ctx *gin.Context, action *parser.QueryAction) {
 		return
 	}
 
-	best := h.providerService.Rank(result)
+	best := service.Rank(result)
 
-	provider, redirect, err := h.providerService.ResolveAndFallback(
+	provider, redirect, err := service.ResolveAndFallback(
 		result.Query,
 		best,
 	)
