@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/OrbitalJin/qmuxr/internal/parser"
+	"github.com/OrbitalJin/michi/internal/parser"
 	"github.com/gin-gonic/gin"
 )
 

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/OrbitalJin/qmuxr/internal/models"
+	"github.com/OrbitalJin/michi/internal/models"
 )
 
 func Import(path string, db *Store) error {

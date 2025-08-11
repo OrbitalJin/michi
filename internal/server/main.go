@@ -3,11 +3,11 @@ package server
 import (
 	"fmt"
 
-	"github.com/OrbitalJin/qmuxr/internal/parser"
-	"github.com/OrbitalJin/qmuxr/internal/router"
-	"github.com/OrbitalJin/qmuxr/internal/router/handler"
-	"github.com/OrbitalJin/qmuxr/internal/service"
-	"github.com/OrbitalJin/qmuxr/internal/store"
+	"github.com/OrbitalJin/michi/internal/parser"
+	"github.com/OrbitalJin/michi/internal/router"
+	"github.com/OrbitalJin/michi/internal/router/handler"
+	"github.com/OrbitalJin/michi/internal/service"
+	"github.com/OrbitalJin/michi/internal/store"
 )
 
 type Server struct {

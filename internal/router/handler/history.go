@@ -5,8 +5,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/OrbitalJin/qmuxr/internal/models"
-	"github.com/OrbitalJin/qmuxr/internal/parser"
+	"github.com/OrbitalJin/michi/internal/models"
+	"github.com/OrbitalJin/michi/internal/parser"
 )
 
 func (h *Handler) logSearchHistoryAsync(result *parser.Result, provider *models.SearchProvider) {

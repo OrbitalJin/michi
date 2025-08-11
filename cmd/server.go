@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/OrbitalJin/qmuxr/internal/parser"
-	"github.com/OrbitalJin/qmuxr/internal/server"
-	"github.com/OrbitalJin/qmuxr/internal/service"
-	"github.com/OrbitalJin/qmuxr/internal/store"
+	"github.com/OrbitalJin/michi/internal/parser"
+	"github.com/OrbitalJin/michi/internal/server"
+	"github.com/OrbitalJin/michi/internal/service"
+	"github.com/OrbitalJin/michi/internal/store"
 )
 
 var bangParserConfig = parser.NewConfig("!")
@@ -24,10 +24,10 @@ var config = server.NewConfig(
 
 func main() {
 
-	qmuxr, err := server.New(config)
+	michi, err := server.New(config)
 	if err != nil {
 		panic(err)
 	}
 
-	qmuxr.Start(":5980")
+	michi.Start(":5980")
 }

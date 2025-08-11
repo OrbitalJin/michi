@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/OrbitalJin/qmuxr/internal/models"
-	"github.com/OrbitalJin/qmuxr/internal/repository"
+	"github.com/OrbitalJin/michi/internal/models"
+	"github.com/OrbitalJin/michi/internal/repository"
 )
 
 type HistoryServiceIface interface {

@@ -1,8 +1,8 @@
 package router
 
 import (
-	"github.com/OrbitalJin/qmuxr/internal/router/handler"
-	"github.com/OrbitalJin/qmuxr/internal/templater"
+	"github.com/OrbitalJin/michi/internal/router/handler"
+	"github.com/OrbitalJin/michi/internal/templater"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )

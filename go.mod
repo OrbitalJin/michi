@@ -1,4 +1,4 @@
-module github.com/OrbitalJin/qmuxr
+module github.com/OrbitalJin/michi
 
 go 1.24.5
 

@@ -1,9 +1,9 @@
 package server
 
 import (
-	"github.com/OrbitalJin/qmuxr/internal/parser"
-	"github.com/OrbitalJin/qmuxr/internal/service"
-	"github.com/OrbitalJin/qmuxr/internal/store"
+	"github.com/OrbitalJin/michi/internal/parser"
+	"github.com/OrbitalJin/michi/internal/service"
+	"github.com/OrbitalJin/michi/internal/store"
 )
 
 type Config struct {

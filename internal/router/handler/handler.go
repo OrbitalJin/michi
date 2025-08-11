@@ -3,9 +3,9 @@ package handler
 import (
 	"net/http"
 
-	"github.com/OrbitalJin/qmuxr/internal/models"
-	"github.com/OrbitalJin/qmuxr/internal/parser"
-	"github.com/OrbitalJin/qmuxr/internal/service"
+	"github.com/OrbitalJin/michi/internal/models"
+	"github.com/OrbitalJin/michi/internal/parser"
+	"github.com/OrbitalJin/michi/internal/service"
 	"github.com/gin-gonic/gin"
 )
 

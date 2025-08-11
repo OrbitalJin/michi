@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/OrbitalJin/qmuxr/internal/models"
+	"github.com/OrbitalJin/michi/internal/models"
 )
 
 type SessionsRepoIface interface {

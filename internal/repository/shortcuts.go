@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/OrbitalJin/qmuxr/internal/models"
+	"github.com/OrbitalJin/michi/internal/models"
 )
 
 type ShortcutsRepoIface interface {

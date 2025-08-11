@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/OrbitalJin/qmuxr/internal/repository"
+	"github.com/OrbitalJin/michi/internal/repository"
 	_ "github.com/mattn/go-sqlite3"
 )
 
