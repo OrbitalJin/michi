@@ -1,6 +1,10 @@
 package main
 
 import (
+	"log"
+	"os"
+
+	"github.com/OrbitalJin/michi/cli"
 	"github.com/OrbitalJin/michi/internal/parser"
 	"github.com/OrbitalJin/michi/internal/server"
 	"github.com/OrbitalJin/michi/internal/service"
@@ -23,17 +27,19 @@ var config = server.NewConfig(
 	serviceConfig,
 )
 
-func serve(port string) {
+func main() {
+	gin.SetMode(gin.ReleaseMode)
 
 	michi, err := server.New(config)
+
 	if err != nil {
 		panic(err)
 	}
 
-	michi.Start(port)
-}
+	michiCli := cli.New(michi)
+	err = michiCli.Run(os.Args)
 
-func main() {
-	gin.SetMode(gin.ReleaseMode)
-	serve(":5980")
+	if err != nil {
+		log.Fatal(err)
+	}
 }

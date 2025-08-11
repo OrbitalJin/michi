@@ -70,6 +70,10 @@ func New(config *Config) (*Server, error) {
 	}, nil
 }
 
+func (server *Server) GetServices() *service.Services {
+	return server.services
+}
+
 func (server *Server) Start(port string) {
 	server.router.Up(port)
 }

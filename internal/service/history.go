@@ -8,6 +8,7 @@ import (
 type HistoryServiceIface interface {
 	Insert(entry *models.SearchHistoryEvent) error
 	GetRecentHistory(limit int) ([]models.SearchHistoryEvent, error)
+	GetAllHistory() ([]models.SearchHistoryEvent, error)
 	DeleteEntry(id int) error
 }
 
@@ -27,6 +28,10 @@ func (service *HistoryService) Insert(entry *models.SearchHistoryEvent) error {
 
 func (service *HistoryService) GetRecentHistory(limit int) ([]models.SearchHistoryEvent, error) {
 	return service.repo.GetRecentHistory(limit)
+}
+
+func (service *HistoryService) GetAllHistory() ([]models.SearchHistoryEvent, error) {
+	return service.repo.GetAllHistory()
 }
 
 func (service *HistoryService) DeleteEntry(id int) error {

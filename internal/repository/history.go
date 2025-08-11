@@ -12,6 +12,7 @@ type HistoryRepoIface interface {
 	Migrate() error
 	Insert(entry *models.SearchHistoryEvent) error
 	GetRecentHistory(limit int) ([]models.SearchHistoryEvent, error)
+	GetAllHistory() ([]models.SearchHistoryEvent, error)
 	DeleteEntry(id int) error
 	DeleteOldHistory(beforeTime time.Time) error
 }
@@ -67,6 +68,48 @@ func (r *HistoryRepo) GetRecentHistory(limit int) ([]models.SearchHistoryEvent, 
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to query recent history: %w", err)
+	}
+
+	defer rows.Close()
+
+	var history []models.SearchHistoryEvent
+	for rows.Next() {
+		var entry models.SearchHistoryEvent
+		var timestampStr string
+
+		err := rows.Scan(
+			&entry.ID,
+			&entry.Query,
+			&entry.ProviderID,
+			&entry.ProviderTag,
+			&timestampStr,
+		)
+		if err != nil {
+			return nil, fmt.Errorf("failed to scan history row: %w", err)
+		}
+
+		entry.Timestamp, err = time.Parse(time.RFC3339, timestampStr)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse timestamp from DB: %w", err)
+		}
+		history = append(history, entry)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, fmt.Errorf("error during rows iteration: %w", err)
+	}
+
+	return history, nil
+}
+
+func (r *HistoryRepo) GetAllHistory() ([]models.SearchHistoryEvent, error) {
+	rows, err := r.db.Query(`
+		SELECT id, query, provider_id, provider_tag, timestamp
+		FROM search_history
+		ORDER BY timestamp DESC`)
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to query all history: %w", err)
 	}
 
 	defer rows.Close()
