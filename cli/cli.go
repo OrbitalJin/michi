@@ -15,6 +15,9 @@ func New(services *service.Services) *Cli {
 		services: services,
 		app: &cli.App{
 			Name: "michi",
+			Commands: []*cli.Command{
+				history(services),
+			},
 		},
 	}
 }
