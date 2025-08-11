@@ -15,6 +15,7 @@ func history(service service.HistoryServiceIface) *v2.Command {
 		Usage: "to manage history",
 		Subcommands: []*v2.Command{
 			list(service),
+			delete(service),
 		},
 	}
 }
@@ -57,6 +58,31 @@ func list(service service.HistoryServiceIface) *v2.Command {
 			selected := fzfHistory(history)
 			fmt.Println(selected)
 
+			return nil
+		},
+	}
+}
+
+func delete(service service.HistoryServiceIface) *v2.Command {
+	return &v2.Command{
+		Name:  "delete",
+		Usage: "delete an entry",
+		Action: func(ctx *v2.Context) error {
+			history, err := service.GetAllHistory()
+
+			if err != nil {
+				return err
+			}
+
+			selected := fzfHistory(history)
+
+			err = service.DeleteEntry(selected.ID)
+
+			if err != nil {
+				return err
+			}
+
+			fmt.Println("Deleted successfully.")
 			return nil
 		},
 	}
