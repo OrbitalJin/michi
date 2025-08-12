@@ -99,6 +99,7 @@ Once configured, simply type into your browser's address bar:
 - [ ] Apps like translate e.g. $translate
 - [ ] Hydrate local user's copy of the database from embedded snapshot
 - [ ] Make sure to only store history in the local copy of the database
+- [ ] Implement copy to clipboard
 - [x] Shortcuts e.g. repos => github.com/johndoe?tab=repositories
 - [x] Bangs
 - [x] History
@@ -142,6 +143,6 @@ Once configured, simply type into your browser's address bar:
 - [x] Speed it up
 - [x] clean up api & router
 - [x] implement caching using sync.Map
-- [ ] Implement features: shortcuts #, sessions @ and history $
+- [x] Implement features: shortcuts #, sessions @ and history $
 - [ ] build cli
 - [ ] Embed snapshot of the database & hydrate a local version on the user's machine
