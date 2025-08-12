@@ -99,13 +99,19 @@ Once configured, simply type into your browser's address bar:
 - [ ] Apps like translate e.g. $translate
 - [ ] Hydrate local user's copy of the database from embedded snapshot
 - [ ] Make sure to only store history in the local copy of the database
-- [x] Implement copy to clipboard
 - [x] Shortcuts e.g. repos => github.com/johndoe?tab=repositories
 - [x] Bangs
 - [x] History
 - [x] Sessions
 - [x] embedded templates
 - [x] seperate router with templates & handlers
+
+## cli 
+- [x] Implement copy to clipboard
+- [x] History, delete, copy, list 
+- [ ] bangs list, add, Delete
+- [ ] sessions list, add, delete
+- [ ] shortcuts list, add, delete
 
 ## Features 
 - [x] Schema (html/json or relational)

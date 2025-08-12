@@ -64,7 +64,6 @@ func list(service service.HistoryServiceIface) *v2.Command {
 			}
 
 			fmt.Printf("Selection copied to clipboard: %s\n", selected.Query)
-
 			return nil
 		},
 	}
