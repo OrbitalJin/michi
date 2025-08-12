@@ -3,6 +3,7 @@ module github.com/OrbitalJin/michi
 go 1.24.5
 
 require (
+	github.com/atotto/clipboard v0.1.4
 	github.com/gin-contrib/cors v1.7.6
 	github.com/gin-gonic/gin v1.10.1
 	github.com/ktr0731/go-fuzzyfinder v0.9.0

@@ -5,6 +5,7 @@ import (
 
 	"github.com/OrbitalJin/michi/internal/models"
 	"github.com/OrbitalJin/michi/internal/service"
+	"github.com/atotto/clipboard"
 	fzf "github.com/ktr0731/go-fuzzyfinder"
 	v2 "github.com/urfave/cli/v2"
 )
@@ -56,8 +57,14 @@ func list(service service.HistoryServiceIface) *v2.Command {
 			}
 
 			selected := fzfHistory(history)
-			// TODO: Implement copy to clipboard
-			fmt.Println(selected)
+			err = clipboard.WriteAll(selected.Query)
+
+			if err != nil {
+				return err
+			}
+
+			fmt.Printf("Selection copied to clipboard: %s\n", selected.Query)
+
 			return nil
 		},
 	}
