@@ -74,6 +74,6 @@ func (server *Server) GetServices() *service.Services {
 	return server.services
 }
 
-func (server *Server) Start(port string) {
-	server.router.Up(port)
+func (server *Server) Serve() {
+	server.router.Serve(server.config.port)
 }

@@ -16,6 +16,7 @@ func New(server *server.Server) *v2.App {
 		EnableBashCompletion: true,
 		Commands: []*v2.Command{
 			history(server.GetServices().GetHistoryService()),
+			serve(server),
 		},
 	}
 }

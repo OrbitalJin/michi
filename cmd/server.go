@@ -20,6 +20,7 @@ var storeConfig = store.NewConfig("./index.db")
 var serviceConfig = service.NewConfig(true, "g")
 
 var config = server.NewConfig(
+	":5980",
 	bangParserConfig,
 	shortcutParserConfig,
 	sesssionParserConfig,

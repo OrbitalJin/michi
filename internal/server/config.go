@@ -12,9 +12,11 @@ type Config struct {
 	seshParserCfg     *parser.Config
 	storeCfg          *store.Config
 	serviceCgf        *service.Config
+	port string
 }
 
 func NewConfig(
+	port string,
 	bpCfg,
 	scpCfg,
 	seshCfg *parser.Config,
@@ -23,6 +25,7 @@ func NewConfig(
 ) *Config {
 
 	return &Config{
+		port:              port,
 		bangParserCfg:     bpCfg,
 		shortcutParserCfg: scpCfg,
 		seshParserCfg:     seshCfg,

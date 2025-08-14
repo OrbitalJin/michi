@@ -10,7 +10,7 @@ import (
 type RouterIface interface {
 	GetEngine() *gin.Engine
 	Route()
-	Up(port string)
+	Serve(port string)
 }
 
 type Router struct {
@@ -57,6 +57,6 @@ func (r *Router) GetEngine() *gin.Engine {
 
 }
 
-func (r *Router) Up(port string) {
+func (r *Router) Serve(port string) {
 	r.Engine.Run(port)
 }
