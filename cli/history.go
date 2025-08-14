@@ -57,6 +57,12 @@ func list(service service.HistoryServiceIface) *v2.Command {
 			}
 
 			selected := fzfHistory(history)
+
+			if selected == nil {
+				fmt.Println("No entry selected.")
+				return nil
+			}
+
 			err = clipboard.WriteAll(selected.Query)
 
 			if err != nil {
