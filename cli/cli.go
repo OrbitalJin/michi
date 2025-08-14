@@ -12,11 +12,13 @@ type Cli struct {
 
 func New(server *server.Server) *v2.App {
 	return &v2.App{
-		Name: "michi",
+		Name:                 "michi",
 		EnableBashCompletion: true,
 		Commands: []*v2.Command{
 			history(server.GetServices().GetHistoryService()),
 			serve(server),
+			stop(),
+			doctor(),
 		},
 	}
 }

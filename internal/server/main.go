@@ -45,6 +45,7 @@ func New(config *Config) (*Server, error) {
 		store.SearchProviders,
 		config.serviceCgf,
 	)
+
 	hsvc := service.NewHistoryService(store.History)
 	scsvc := service.NewShortcutService(store.Shortcuts)
 	seshsvc := service.NewSessionService(store.Sessions)
@@ -74,6 +75,6 @@ func (server *Server) GetServices() *service.Services {
 	return server.services
 }
 
-func (server *Server) Serve() {
-	server.router.Serve(server.config.port)
+func (server *Server) Serve() error {
+	return server.router.Serve(server.config.port)
 }
