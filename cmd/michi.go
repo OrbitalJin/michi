@@ -15,9 +15,9 @@ import (
 )
 
 func main() {
-	if os.Getenv("ENV") == "prod" {
-		gin.SetMode(gin.ReleaseMode)
-	} else {
+	gin.SetMode(gin.ReleaseMode)
+
+	if os.Getenv("ENV") == "dev" {
 		gin.SetMode(gin.DebugMode)
 		log.Println("Running in development mode.")
 	}

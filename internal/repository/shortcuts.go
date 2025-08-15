@@ -14,6 +14,7 @@ type ShortcutsRepoIface interface {
 	GetFromAlias(alias string) (*models.Shortcut, error)
 	GetAll() ([]models.Shortcut, error)
 	Delete(id int) error
+	DeleteFromAlias(alias string) error
 }
 
 type ShortcutsRepo struct {
@@ -115,5 +116,12 @@ func (repo *ShortcutsRepo) Delete(id int) error {
 	stmt := `DELETE FROM shortcuts WHERE id = ?`
 
 	_, err := repo.db.Exec(stmt, id)
+	return err
+}
+
+func (repo *ShortcutsRepo) DeleteFromAlias(alias string) error {
+	stmt := `DELETE FROM shortcuts WHERE alias = ?`
+
+	_, err := repo.db.Exec(stmt, alias)
 	return err
 }

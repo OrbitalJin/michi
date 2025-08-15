@@ -111,9 +111,9 @@ Once configured, simply type into your browser's address bar:
 - [x] Implement copy to clipboard
 - [x] History, delete, copy, list 
 - [x] Server lifecycle management
+- [x] shortcuts list, add, delete
 - [ ] bangs list, add, Delete
 - [ ] sessions list, add, delete
-- [ ] shortcuts list, add, delete
 
 
 ## Features 

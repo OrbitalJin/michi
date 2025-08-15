@@ -11,6 +11,7 @@ type ShortcutServiceIface interface {
 	GetFromAlias(alias string) (*models.Shortcut, error)
 	GetAll() ([]models.Shortcut, error)
 	Delete(id int) error
+	DeleteFromAlias(alias string) error
 }
 
 type ShortcutService struct {
@@ -58,4 +59,8 @@ func (service *ShortcutService) GetAll() ([]models.Shortcut, error) {
 
 func (service *ShortcutService) Delete(id int) error {
 	return service.repo.Delete(id)
+}
+
+func (service *ShortcutService) DeleteFromAlias(alias string) error {
+	return service.repo.DeleteFromAlias(alias)
 }

@@ -16,6 +16,7 @@ func Root(service service.ShortcutServiceIface) *v2.Command {
 		Subcommands: []*v2.Command{
 			list(service),
 			add(service),
+			delete(service),
 		},
 	}
 }
