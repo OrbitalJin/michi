@@ -15,7 +15,12 @@ import (
 )
 
 func main() {
-	gin.SetMode(gin.ReleaseMode)
+	if os.Getenv("ENV") == "prod" {
+		gin.SetMode(gin.ReleaseMode)
+	} else {
+		gin.SetMode(gin.DebugMode)
+		log.Println("Running in development mode.")
+	}
 
 	configDir, err := internal.EnsureConfigDir()
 	if err != nil {

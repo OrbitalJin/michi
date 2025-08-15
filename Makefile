@@ -1,8 +1,8 @@
-serve-dev:
-	@go run ./cmd/server.go
+
+build-dev:
+	@export ENV=dev && mkdir -p build && export GIN_MODE=release && go build -o ./build/michi-dev ./cmd/michi.go
+
 
 build-prod:
-	@mkdir -p build && export GIN_MODE=release && go build -o ./build/michi ./cmd/server.go
+	@export ENV=prod && mkdir -p build && export GIN_MODE=release && go build -o ./build/michi ./cmd/michi.go
 
-serve-prod:
-	@mkdir -p build && export GIN_MODE=release && go build -o ./build/michi ./cmd/server.go && chmod +x ./build/michi && ./build/michi
