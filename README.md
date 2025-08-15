@@ -153,7 +153,7 @@ Once configured, simply type into your browser's address bar:
 - [x] clean up api & router
 - [x] implement caching using sync.Map
 - [x] Implement features: shortcuts #, sessions @ and history $
-- [ ] Refactor config to use yaml 
+- [x] Refactor config to use yaml 
 - [ ] build cli
 - [ ] Embed snapshot of the database & hydrate a local version on the user's machine
 - [ ] CI/CD crossplatform build pipeline

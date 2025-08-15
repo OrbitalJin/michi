@@ -3,8 +3,10 @@ package main
 import (
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/OrbitalJin/michi/cli"
+	"github.com/OrbitalJin/michi/internal"
 	"github.com/OrbitalJin/michi/internal/parser"
 	"github.com/OrbitalJin/michi/internal/server"
 	"github.com/OrbitalJin/michi/internal/service"
@@ -12,28 +14,42 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var bangParserConfig = parser.NewConfig("!")
-var shortcutParserConfig = parser.NewConfig("@")
-var sesssionParserConfig = parser.NewConfig("#")
-
-var storeConfig = store.NewConfig("./index.db")
-var serviceConfig = service.NewConfig(true, "g")
-
-var config = server.NewConfig(
-	":5980",
-	"/tmp/michi.pid",
-	"/tmp/michi.log",
-	bangParserConfig,
-	shortcutParserConfig,
-	sesssionParserConfig,
-	storeConfig,
-	serviceConfig,
-)
-
 func main() {
 	gin.SetMode(gin.ReleaseMode)
 
-	michi, err := server.New(config)
+	configDir, err := internal.EnsureConfigDir()
+	if err != nil {
+		log.Fatalf("Failed to prepare configuration directory: %v", err)
+	}
+
+	config, err := internal.LoadConfig(filepath.Join(configDir, "config.yaml"))
+	if err != nil {
+		log.Fatalf("Failed to load application configuration: %v", err)
+	}
+
+	config.Server.PidFile = internal.ExpandTilde(config.Server.PidFile)
+	config.Server.LogFile = internal.ExpandTilde(config.Server.LogFile)
+	config.Store.DBPath = internal.ExpandTilde(config.Store.DBPath)
+
+	bangParserConfig := parser.NewConfig(config.Parser.BangPrefix)
+	shortcutParserConfig := parser.NewConfig(config.Parser.ShortcutPrefix)
+	sessionParserConfig := parser.NewConfig(config.Parser.SessionPrefix)
+
+	storeConfig := store.NewConfig(config.Store.DBPath)
+	serviceConfig := service.NewConfig(config.Service.KeepTrack, config.Service.DefaultProvider)
+
+	serverConfig := server.NewConfig(
+		config.Server.Port,
+		config.Server.PidFile,
+		config.Server.LogFile,
+		bangParserConfig,
+		shortcutParserConfig,
+		sessionParserConfig,
+		storeConfig,
+		serviceConfig,
+	)
+
+	michi, err := server.New(serverConfig)
 
 	if err != nil {
 		panic(err)
