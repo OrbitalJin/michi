@@ -21,6 +21,8 @@ var serviceConfig = service.NewConfig(true, "g")
 
 var config = server.NewConfig(
 	":5980",
+	"/tmp/michi.pid",
+	"/tmp/michi.log",
 	bangParserConfig,
 	shortcutParserConfig,
 	sesssionParserConfig,

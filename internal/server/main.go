@@ -76,5 +76,9 @@ func (server *Server) GetServices() *service.Services {
 }
 
 func (server *Server) Serve() error {
-	return server.router.Serve(server.config.port)
+	return server.router.Serve(server.config.Port)
+}
+
+func (server *Server) GetConfig() *Config {
+	return server.config
 }

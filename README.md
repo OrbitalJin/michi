@@ -94,6 +94,7 @@ Once configured, simply type into your browser's address bar:
 ---
 
 ## Ideas
+- [ ] Migrate to sqlc?
 - [ ] Settings dashboard or cli
 - [ ] Analytics
 - [ ] Apps like translate e.g. $translate
@@ -113,6 +114,7 @@ Once configured, simply type into your browser's address bar:
 - [ ] bangs list, add, Delete
 - [ ] sessions list, add, delete
 - [ ] shortcuts list, add, delete
+
 
 ## Features 
 - [x] Schema (html/json or relational)
@@ -151,5 +153,8 @@ Once configured, simply type into your browser's address bar:
 - [x] clean up api & router
 - [x] implement caching using sync.Map
 - [x] Implement features: shortcuts #, sessions @ and history $
+- [ ] Refactor config to use yaml 
 - [ ] build cli
 - [ ] Embed snapshot of the database & hydrate a local version on the user's machine
+- [ ] CI/CD crossplatform build pipeline
+- [ ] bash installer + curl | sh 
