@@ -3,6 +3,7 @@ package cli
 import (
 	"github.com/OrbitalJin/michi/cli/history"
 	"github.com/OrbitalJin/michi/cli/lifecycle"
+	"github.com/OrbitalJin/michi/cli/shortcuts"
 	"github.com/OrbitalJin/michi/internal/server"
 	v2 "github.com/urfave/cli/v2"
 )
@@ -19,6 +20,7 @@ func New(server *server.Server) *v2.App {
 		EnableBashCompletion: true,
 		Commands: []*v2.Command{
 			history.Root(server.GetServices().GetHistoryService()),
+			shortcuts.Root(server.GetServices().GetShortcutService()),
 			lifecycle.Serve(server),
 			lifecycle.Stop(server),
 			lifecycle.Doctor(server),

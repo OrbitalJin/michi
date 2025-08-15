@@ -15,14 +15,17 @@ type Config struct {
 		PidFile string `yaml:"pid_file"`
 		LogFile string `yaml:"log_file"`
 	} `yaml:"server"`
+
 	Parser struct {
 		BangPrefix     string `yaml:"bang_prefix"`
 		ShortcutPrefix string `yaml:"shortcut_prefix"`
 		SessionPrefix  string `yaml:"session_prefix"`
 	} `yaml:"parser"`
+
 	Store struct {
 		DBPath string `yaml:"db_path"`
 	} `yaml:"store"`
+
 	Service struct {
 		KeepTrack       bool   `yaml:"keep_track"`
 		DefaultProvider string `yaml:"default_provider"`
@@ -70,7 +73,7 @@ func NewDefaultAppConfig() *Config {
 	}
 }
 
-func LoadAppConfig(configFilePath string) (*Config, error) {
+func LoadConfig(configFilePath string) (*Config, error) {
 	cfg := NewDefaultAppConfig()
 
 	if configFilePath == "" {

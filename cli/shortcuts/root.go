@@ -1,4 +1,4 @@
-package history
+package shortcuts
 
 import (
 	"fmt"
@@ -9,32 +9,32 @@ import (
 	v2 "github.com/urfave/cli/v2"
 )
 
-func Root(service service.HistoryServiceIface) *v2.Command {
+func Root(service service.ShortcutServiceIface) *v2.Command {
 	return &v2.Command{
-		Name:  "history",
-		Usage: "to manage history",
+		Name:  "shortcuts",
+		Usage: "to manage shortcuts",
 		Subcommands: []*v2.Command{
 			list(service),
-			delete(service),
+			add(service),
 		},
 	}
 }
 
-func fzf(history []models.SearchHistoryEvent) *models.SearchHistoryEvent {
+func fzf(shortcuts []models.Shortcut) *models.Shortcut {
 	index, err := fuzzy.FindMulti(
-		history,
+		shortcuts,
 		func(i int) string {
-			return history[i].Query
+			return shortcuts[i].Alias
 
 		},
 		fuzzy.WithPreviewWindow(func(i, w, h int) string {
 			if i == -1 {
 				return ""
 			}
-			return fmt.Sprintf("Query: %s \nProvider: (%s) \nTimeStamp: %s",
-				history[i].Query,
-				history[i].ProviderTag,
-				history[i].Timestamp,
+			return fmt.Sprintf("Alias: %s \nURL: (%s) \nCreated At: %s",
+				shortcuts[i].Alias,
+				shortcuts[i].URL,
+				shortcuts[i].CreatedAt,
 			)
 		}))
 
@@ -43,7 +43,7 @@ func fzf(history []models.SearchHistoryEvent) *models.SearchHistoryEvent {
 	}
 
 	if len(index) > 0 {
-		return &history[index[0]]
+		return &shortcuts[index[0]]
 	}
 
 	return nil

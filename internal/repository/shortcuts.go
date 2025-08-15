@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"fmt"
+	"time"
 
 	"github.com/OrbitalJin/michi/internal/models"
 )
@@ -11,6 +12,7 @@ type ShortcutsRepoIface interface {
 	Migrate() error
 	Insert(shortcut *models.Shortcut) error
 	GetFromAlias(alias string) (*models.Shortcut, error)
+	GetAll() ([]models.Shortcut, error)
 	Delete(id int) error
 }
 
@@ -27,7 +29,8 @@ func (repo *ShortcutsRepo) Migrate() error {
 		CREATE TABLE IF NOT EXISTS shortcuts (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			alias TEXT NOT NULL UNIQUE,
-			url TEXT NOT NULL
+			url TEXT NOT NULL,
+			created_at DATETIME NOT NULL
 		);
 	`
 	_, err := repo.db.Exec(stmt)
@@ -37,10 +40,16 @@ func (repo *ShortcutsRepo) Migrate() error {
 func (repo *ShortcutsRepo) Insert(shortcut *models.Shortcut) error {
 	stmt := `
 		INSERT INTO shortcuts
-		(alias, url)
-		VALUES (?, ?);
+		(alias, url, created_at)
+		VALUES (?, ?, ?);
 	`
-	_, err := repo.db.Exec(stmt, shortcut.Alias, shortcut.URL)
+
+	_, err := repo.db.Exec(
+		stmt,
+		shortcut.Alias,
+		shortcut.URL,
+		time.Now().Format(time.RFC3339),
+	)
 	return err
 }
 
@@ -63,6 +72,43 @@ func (repo *ShortcutsRepo) GetFromAlias(alias string) (*models.Shortcut, error) 
 	}
 
 	return &shortcut, nil
+}
+
+func (repo *ShortcutsRepo) GetAll() ([]models.Shortcut, error) {
+	stmt := `SELECT id, alias, url, created_at FROM shortcuts`
+
+	rows, err := repo.db.Query(stmt)
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to query all shortcuts: %w", err)
+	}
+
+	defer rows.Close()
+
+	var shortcuts []models.Shortcut
+	for rows.Next() {
+		var shortcut models.Shortcut
+		var createdAtStr string
+
+		err := rows.Scan(
+			&shortcut.ID,
+			&shortcut.Alias,
+			&shortcut.URL,
+			&createdAtStr,
+		)
+		if err != nil {
+			return nil, fmt.Errorf("failed to scan shortcut row: %w", err)
+		}
+
+		shortcut.CreatedAt, err = time.Parse(time.RFC3339, createdAtStr)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse created_at for shortcut `%s`: %w", shortcut.Alias, err)
+		}
+
+		shortcuts = append(shortcuts, shortcut)
+	}
+
+	return shortcuts, nil
 }
 
 func (repo *ShortcutsRepo) Delete(id int) error {

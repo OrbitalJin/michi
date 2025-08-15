@@ -9,6 +9,7 @@ import (
 type ShortcutServiceIface interface {
 	Insert(shortcut *models.Shortcut) error
 	GetFromAlias(alias string) (*models.Shortcut, error)
+	GetAll() ([]models.Shortcut, error)
 	Delete(id int) error
 }
 
@@ -49,6 +50,10 @@ func (service *ShortcutService) GetFromAlias(alias string) (*models.Shortcut, er
 	service.cache.Store(alias, shortcut)
 
 	return shortcut, nil
+}
+
+func (service *ShortcutService) GetAll() ([]models.Shortcut, error) {
+	return service.repo.GetAll()
 }
 
 func (service *ShortcutService) Delete(id int) error {

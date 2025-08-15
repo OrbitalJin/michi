@@ -44,7 +44,7 @@ func list(service service.HistoryServiceIface) *v2.Command {
 				return err
 			}
 
-			selected := fzfHistory(history)
+			selected := fzf(history)
 
 			if selected == nil {
 				fmt.Println("No entry selected.")
