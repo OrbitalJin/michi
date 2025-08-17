@@ -43,7 +43,7 @@ func delete(service service.HistoryServiceIface) *v2.Command {
 				return err
 			}
 
-			selected := fzf(history)
+			selected := fzf(history, "Delete")
 
 			if selected == nil {
 				fmt.Println("No entry selected.")

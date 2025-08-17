@@ -16,23 +16,26 @@ func Root(server *server.Server) *v2.Command {
 		Usage: "Manage sessions",
 		Subcommands: []*v2.Command{
 			list(server.GetServices().GetSessionService()),
+			create(server.GetServices().GetSessionService()),
+			delete(server.GetServices().GetSessionService()),
 		},
 	}
 }
 
-func fzf(sessions []models.Session) *models.Session {
+func fzf(sessions []models.Session, message string) *models.Session {
 	index, err := fuzzy.FindMulti(
 		sessions,
 		func(i int) string {
 			return sessions[i].Alias
 
 		},
+		fuzzy.WithHeader("Sessions - "+message),
 		fuzzy.WithPreviewWindow(func(i, w, h int) string {
 			if i == -1 {
 				return ""
 			}
-			urlsStr := strings.Join(sessions[i].URLs, "\n")
-			return fmt.Sprintf("Alias: %s \nURL: (%s) \nCreated At: %s",
+			urlsStr := strings.Join(sessions[i].URLs, "\n\t")
+			return fmt.Sprintf("Alias: %s \nURLs:\n%s \nCreated At: %s",
 				sessions[i].Alias,
 				urlsStr,
 				sessions[i].CreatedAt,

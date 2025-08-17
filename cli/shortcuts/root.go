@@ -21,18 +21,19 @@ func Root(service service.ShortcutServiceIface) *v2.Command {
 	}
 }
 
-func fzf(shortcuts []models.Shortcut) *models.Shortcut {
+func fzf(shortcuts []models.Shortcut, message string) *models.Shortcut {
 	index, err := fuzzy.FindMulti(
 		shortcuts,
 		func(i int) string {
 			return shortcuts[i].Alias
 
 		},
+		fuzzy.WithHeader("Shortcuts - "+message),
 		fuzzy.WithPreviewWindow(func(i, w, h int) string {
 			if i == -1 {
 				return ""
 			}
-			return fmt.Sprintf("Alias: %s \nURLs:\n%s \nCreated At: %s",
+			return fmt.Sprintf("Alias: %s \nURL: (%s) \nCreated At: %s",
 				shortcuts[i].Alias,
 				shortcuts[i].URL,
 				shortcuts[i].CreatedAt,

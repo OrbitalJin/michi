@@ -1,4 +1,4 @@
-package shortcuts
+package sessions
 
 import (
 	"fmt"
@@ -7,22 +7,21 @@ import (
 	v2 "github.com/urfave/cli/v2"
 )
 
-func delete(service service.ShortcutServiceIface) *v2.Command {
+func delete(service service.SessionServiceIface) *v2.Command {
 	return &v2.Command{
 		Name:  "delete",
-		Usage: "delete a shortcut",
+		Usage: "delete a session",
 		Action: func(c *v2.Context) error {
-
-			shortcuts, err := service.GetAll()
+			sessions, err := service.GetAll()
 
 			if err != nil {
 				return err
 			}
 
-			selected := fzf(shortcuts, "Delete")
+			selected := fzf(sessions, "Delete")
 
 			if selected == nil {
-				fmt.Println("No shortcut selected")
+				fmt.Println("No session selected")
 				return nil
 			}
 
@@ -32,7 +31,7 @@ func delete(service service.ShortcutServiceIface) *v2.Command {
 				return err
 			}
 
-			fmt.Printf("Shortcut `%s` deleted.\n", selected.Alias)
+			fmt.Printf("Session `%s` deleted.\n", selected.Alias)
 			return nil
 		},
 	}

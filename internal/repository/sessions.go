@@ -16,6 +16,7 @@ type SessionsRepoIface interface {
 	GetAll() ([]models.Session, error)
 	Update(session *models.Session) error
 	Delete(id int) error
+	DeleteFromAlias(alias string) error
 }
 
 type SessionsRepo struct {
@@ -202,4 +203,10 @@ func (repo *SessionsRepo) Delete(id int) error {
 		return fmt.Errorf("no session found with ID %d to delete", id)
 	}
 	return nil
+}
+
+func (repo *SessionsRepo) DeleteFromAlias(alias string) error {
+	stmt := `DELETE FROM sessions WHERE alias = ?;`
+	_, err := repo.db.Exec(stmt, alias)
+	return err
 }

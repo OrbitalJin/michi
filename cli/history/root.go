@@ -20,13 +20,14 @@ func Root(service service.HistoryServiceIface) *v2.Command {
 	}
 }
 
-func fzf(history []models.SearchHistoryEvent) *models.SearchHistoryEvent {
+func fzf(history []models.SearchHistoryEvent, message string) *models.SearchHistoryEvent {
 	index, err := fuzzy.FindMulti(
 		history,
 		func(i int) string {
 			return history[i].Query
 
 		},
+		fuzzy.WithHeader("History - "+message),
 		fuzzy.WithPreviewWindow(func(i, w, h int) string {
 			if i == -1 {
 				return ""

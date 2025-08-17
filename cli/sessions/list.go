@@ -18,7 +18,7 @@ func list(service service.SessionServiceIface) *v2.Command {
 				return err
 			}
 
-			selected := fzf(sessions)
+			selected := fzf(sessions, "Copy")
 
 			if selected == nil {
 				fmt.Println("no session selected")

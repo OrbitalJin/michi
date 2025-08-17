@@ -112,8 +112,8 @@ Once configured, simply type into your browser's address bar:
 - [x] History, delete, copy, list 
 - [x] Server lifecycle management
 - [x] shortcuts list, add, delete
+- [x] sessions list, add, delete
 - [ ] bangs list, add, Delete
-- [ ] sessions list, add, delete
 
 
 ## Features 

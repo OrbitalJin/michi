@@ -19,7 +19,7 @@ func list(service service.ShortcutServiceIface) *v2.Command {
 				return err
 			}
 
-			selected := fzf(shortcuts)
+			selected := fzf(shortcuts, "Copy")
 
 			if selected == nil {
 				fmt.Println("No shortcut selected")

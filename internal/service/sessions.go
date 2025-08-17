@@ -12,6 +12,7 @@ type SessionServiceIface interface {
 	GetAll() ([]models.Session, error)
 	Update(session *models.Session) error
 	Delete(id int) error
+	DeleteFromAlias(alias string) error
 }
 
 type SessionService struct {
@@ -67,4 +68,8 @@ func (s *SessionService) Update(session *models.Session) error {
 
 func (s *SessionService) Delete(id int) error {
 	return s.repo.Delete(id)
+}
+
+func (s *SessionService) DeleteFromAlias(alias string) error {
+	return s.repo.DeleteFromAlias(alias)
 }
