@@ -32,7 +32,7 @@ func fzf(shortcuts []models.Shortcut) *models.Shortcut {
 			if i == -1 {
 				return ""
 			}
-			return fmt.Sprintf("Alias: %s \nURL: (%s) \nCreated At: %s",
+			return fmt.Sprintf("Alias: %s \nURLs:\n%s \nCreated At: %s",
 				shortcuts[i].Alias,
 				shortcuts[i].URL,
 				shortcuts[i].CreatedAt,

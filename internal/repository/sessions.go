@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/OrbitalJin/michi/internal/models"
 )
@@ -30,7 +31,8 @@ func (repo *SessionsRepo) Migrate() error {
 		CREATE TABLE IF NOT EXISTS sessions (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			alias TEXT NOT NULL UNIQUE,
-			urls TEXT
+			urls TEXT,
+			created_at DATETIME NOT NULL
 		);
 	`
 	_, err := repo.db.Exec(stmt)
@@ -43,8 +45,8 @@ func (repo *SessionsRepo) Migrate() error {
 func (repo *SessionsRepo) Insert(session *models.Session) error {
 	stmt := `
 		INSERT INTO sessions
-		(alias, urls)
-		VALUES (?, ?);
+		(alias, urls, created_at)
+		VALUES (?, ?, ?);
 	`
 
 	jsonData, err := json.Marshal(session.URLs)
@@ -53,7 +55,9 @@ func (repo *SessionsRepo) Insert(session *models.Session) error {
 		return err
 	}
 
-	result, err := repo.db.Exec(stmt, session.Alias, jsonData)
+	createdAt := time.Now().Format(time.RFC3339)
+
+	result, err := repo.db.Exec(stmt, session.Alias, jsonData, createdAt)
 
 	if err != nil {
 		return fmt.Errorf("failed to insert session '%s': %w", session.Alias, err)
@@ -69,15 +73,22 @@ func (repo *SessionsRepo) Insert(session *models.Session) error {
 
 func (repo *SessionsRepo) GetFromAlias(alias string) (*models.Session, error) {
 	var session models.Session
-	stmt := `SELECT id, alias, urls FROM sessions WHERE alias = ?`
+	stmt := `SELECT id, alias, urls, created_at FROM sessions WHERE alias = ?`
 
 	var rawURLs sql.NullString
+	var createdAtStr string
 
 	err := repo.db.QueryRow(stmt, alias).Scan(
 		&session.ID,
 		&session.Alias,
 		&rawURLs,
+		&createdAtStr,
 	)
+
+	session.CreatedAt, err = time.Parse(time.RFC3339, createdAtStr)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse created_at for session `%s`: %w", session.Alias, err)
+	}
 
 	if rawURLs.Valid {
 		var urls []string
@@ -104,7 +115,7 @@ func (repo *SessionsRepo) GetFromAlias(alias string) (*models.Session, error) {
 }
 
 func (repo *SessionsRepo) GetAll() ([]models.Session, error) {
-	stmt := `SELECT id, alias, urls FROM sessions`
+	stmt := `SELECT id, alias, urls, created_at FROM sessions`
 
 	rows, err := repo.db.Query(stmt)
 
@@ -118,12 +129,19 @@ func (repo *SessionsRepo) GetAll() ([]models.Session, error) {
 	for rows.Next() {
 		var session models.Session
 		var rawURLs sql.NullString
+		var createdAtStr string
 
 		err := rows.Scan(
 			&session.ID,
 			&session.Alias,
 			&rawURLs,
+			&createdAtStr,
 		)
+
+		session.CreatedAt, err = time.Parse(time.RFC3339, createdAtStr)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse created_at for session `%s`: %w", session.Alias, err)
+		}
 
 		if rawURLs.Valid {
 			var urls []string
