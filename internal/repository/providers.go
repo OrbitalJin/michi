@@ -13,6 +13,7 @@ type ProviderRepoIface interface {
 	GetByTag(tag string) (*models.SearchProvider, error)
 	GetAll() ([]models.SearchProvider, error)
 	Insert(sp models.SearchProvider) error
+	Delete(id int) error
 }
 
 type ProviderRepo struct {
@@ -85,4 +86,10 @@ func (r *ProviderRepo) GetAll() ([]models.SearchProvider, error) {
 		providers = append(providers, sp)
 	}
 	return providers, nil
+}
+
+func (r *ProviderRepo) Delete(id int) error {
+	stmt := `DELETE FROM search_providers WHERE id = ?`
+	_, err := r.db.Exec(stmt, id)
+	return err
 }

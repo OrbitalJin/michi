@@ -21,6 +21,7 @@ type SPServiceIface interface {
 	Resolve(query string, provider *models.SearchProvider) (*models.SearchProvider, *string, error)
 	ResolveAndFallback(query string, provider *models.SearchProvider) (*models.SearchProvider, *string, error)
 	ResolveWithFallback(query string) (*models.SearchProvider, *string, error)
+	Delete(id int) error
 	GetCfg() *Config
 }
 
@@ -181,4 +182,8 @@ func (service *SPService) GetCfg() *Config {
 
 func (service *SPService) GetAll() ([]models.SearchProvider, error) {
 	return service.repo.GetAll()
+}
+
+func (service *SPService) Delete(id int) error {
+	return service.repo.Delete(id)
 }

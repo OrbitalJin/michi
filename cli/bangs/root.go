@@ -15,6 +15,7 @@ func Root(service service.SPServiceIface) *cli.Command {
 		Usage: "to manage bangs",
 		Subcommands: []*cli.Command{
 			list(service),
+			delete(service),
 		},
 	}
 }
@@ -25,7 +26,7 @@ func fzf(bangs []models.SearchProvider, prompt string) *models.SearchProvider {
 		func(i int) string {
 			return bangs[i].Domain
 		},
-		fuzzy.WithHeader(prompt),
+		fuzzy.WithHeader("Bangs - "+prompt),
 		fuzzy.WithPreviewWindow(func(i, w, h int) string {
 			if i == -1 {
 				return ""
