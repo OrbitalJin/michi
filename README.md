@@ -91,11 +91,11 @@ Once configured, simply type into your browser's address bar:
 
 ## Ideas
 - [ ] Migrate to sqlc?
-- [ ] Settings dashboard or cli
 - [ ] Analytics
 - [ ] Apps like translate e.g. $translate
 - [ ] Hydrate local user's copy of the database from embedded snapshot
 - [ ] Make sure to only store history in the local copy of the database
+- [x] cli
 - [x] Shortcuts e.g. repos => github.com/johndoe?tab=repositories
 - [x] Bangs
 - [x] History
@@ -150,7 +150,7 @@ Once configured, simply type into your browser's address bar:
 - [x] implement caching using sync.Map
 - [x] Implement features: shortcuts #, sessions @ and history $
 - [x] Refactor config to use yaml 
-- [ ] build cli
+- [x] build cli
 - [ ] Embed snapshot of the database & hydrate a local version on the user's machine
 - [ ] CI/CD crossplatform build pipeline
 - [ ] bash installer + curl | sh 
