@@ -4,27 +4,21 @@ A blazing-fast, local search multiplexer for your browser's default search. Navi
 
 ## Features
 
-*   **Bang Search (`!keyword`):** Directly jump to your favorite search engines or websites with custom prefixes (e.g., `!g go modules`, `!yt cat videos`).
-*   **Web Shortcuts (`#shortcut_name`):** Create personalized, quick links to any URL (e.g., `#portal` to open your school portal).
-*   **Session Launcher (`@session_name`):** Open multiple predefined tabs with a single command (e.g., `@dev` to open GitHub, Stack Overflow, and your dev server).
-*   **Local & Private:** Your configurations are stored locally in a SQLite database, never leaving your machine.
-*   **Blazing Fast:** Runs as a tiny background service, providing instant redirects without any network latency or browser pop-up blockers.
-*   **Cross-Platform:** Built with Go, available for Linux, macOS, and Windows.
+
+- Shortcuts: Create, list, and delete shortcuts to quickly access frequently used URLs.
+- Sessions: Create, list, and delete sessions to group related shortcuts together.
+- Bangs: Create, list, and delete bangs to quickly access frequently used search queries.
+- Local & Private: Your configurations are stored locally in a SQLite database, never leaving your machine.
+- Blazing Fast: Runs as a tiny background service, providing instant redirects without any network latency or browser pop-up blockers.
+- Cross-Platform: Built with Go, available for Linux, macOS, and Windows.
 
 ## Get Started
 
 ### 1. Installation
 
-**Recommended (Coming Soon: Package Managers):**
-*   **Linux (APT/Debian):** `sudo apt install michi`
-*   **Linux (Pacman/Arch):** `sudo pacman -S michi`
-*   **macOS (Homebrew):** `brew install michi`
-*   **Windows (Scoop/Chocolatey):** `choco install michi` (or `scoop install michi`)
-
-**Manual Installation (for now):**
-1.  **Download:** Grab the latest executable from the [Releases page](https://github.com/your-org/michi-cli/releases) for your operating system.
-2.  **Place it:** Move the `michi` (or `michi.exe` on Windows) executable to a directory in your system's `PATH` (e.g., `/usr/local/bin` on Linux/macOS, or `C:\Program Files\michi` then add to PATH on Windows).
-3.  **Permissions (Linux/macOS):** Make it executable: `chmod +x /path/to/michi`.
+```bash
+curl -fsSL https://raw.githubusercontent.com/OrbitalJin/michi/master/install.sh | bash
+```
 
 ### 2. Start the Local Server
 
@@ -34,10 +28,15 @@ Run the `michi` HTTP server in the background:
 michi serve
 ```
 
+Or detach it to run it in the background:
+
+```bash
+michi serve --detach
+```
+
 **For persistent background service (Recommended):**
 *   **Linux (systemd):** Instructions for setting up a systemd service unit will go here (e.g., `sudo systemctl enable --now michi`).
 *   **macOS (launchd):** Instructions for setting up a launchd agent.
-*   **Windows (Task Scheduler / NSSM):** Instructions for running as a background task.
 
 The server will listen on `http://localhost:5980` by default.
 
@@ -52,9 +51,6 @@ Set `http://localhost:5980/?q=%s` as your browser's default search engine.
     *   **Search engine:** `michi`
     *   **Shortcut:** `qmx` (or anything you prefer)
     *   **URL with %s:** `http://localhost:5980/?q=%s`
-*   **Firefox:** `Settings > Search > Add new search engine`
-    *   Instructions for adding a custom engine might be slightly more involved, or you might need a dedicated extension.
-
 ---
 
 ## Usage
@@ -62,7 +58,7 @@ Set `http://localhost:5980/?q=%s` as your browser's default search engine.
 Once configured, simply type into your browser's address bar:
 
 *   **Bang Search:**
-    *   `!g my Go query`
+*   `!g my Go query`
     *   `!yt epic jdm cars drifting`
     *   `!gh michi`
 *   **Web Shortcut:**
