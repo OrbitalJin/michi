@@ -12,6 +12,7 @@ import (
 )
 
 type SPServiceIface interface {
+	Insert(p models.SearchProvider) error
 	GetByTag(t string) (*models.SearchProvider, error)
 	GetAll() ([]models.SearchProvider, error)
 	Collect(v string) ([]models.SearchProvider, error)
@@ -43,6 +44,11 @@ func NewSearchProviderService(
 		cache:  cache.New[string, *models.SearchProvider](),
 		config: config,
 	}
+}
+
+func (service *SPService) Insert(p models.SearchProvider) error {
+	p.Rank = 0
+	return service.repo.Insert(p)
 }
 
 func (service *SPService) GetByTag(t string) (*models.SearchProvider, error) {

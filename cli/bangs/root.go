@@ -16,6 +16,7 @@ func Root(service service.SPServiceIface) *cli.Command {
 		Subcommands: []*cli.Command{
 			list(service),
 			delete(service),
+			create(service),
 		},
 	}
 }

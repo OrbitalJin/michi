@@ -18,7 +18,7 @@ type Cli struct {
 func New(server *server.Server) *v2.App {
 	return &v2.App{
 		Name:                 "michi",
-		Usage:                "A super-charger search engine multiplexer 🚀",
+		Usage:                "A super-charged search engine multiplexer 🚀",
 		EnableBashCompletion: true,
 		Commands: []*v2.Command{
 			lifecycle.Serve(server),

@@ -113,7 +113,7 @@ Once configured, simply type into your browser's address bar:
 - [x] Server lifecycle management
 - [x] shortcuts list, add, delete
 - [x] sessions list, add, delete
-- [ ] bangs list, add, Delete
+- [x] bangs list, add, Delete
 
 
 ## Features 
