@@ -14,6 +14,7 @@ import (
 
 type SPServiceIface interface {
 	GetByTag(t string) (*models.SearchProvider, error)
+	GetAll() ([]models.SearchProvider, error)
 	Collect(v string) ([]models.SearchProvider, error)
 	CollectAndRank(v string) (*parser.Result, *models.SearchProvider, error)
 	Rank(result *parser.Result) *models.SearchProvider
@@ -176,4 +177,8 @@ func (service *SPService) ResolveWithFallback(query string) (*models.SearchProvi
 
 func (service *SPService) GetCfg() *Config {
 	return service.config
+}
+
+func (service *SPService) GetAll() ([]models.SearchProvider, error) {
+	return service.repo.GetAll()
 }

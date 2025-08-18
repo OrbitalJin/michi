@@ -21,14 +21,14 @@ func Root(service service.ShortcutServiceIface) *v2.Command {
 	}
 }
 
-func fzf(shortcuts []models.Shortcut, message string) *models.Shortcut {
+func fzf(shortcuts []models.Shortcut, prompt string) *models.Shortcut {
 	index, err := fuzzy.FindMulti(
 		shortcuts,
 		func(i int) string {
 			return shortcuts[i].Alias
 
 		},
-		fuzzy.WithHeader("Shortcuts - "+message),
+		fuzzy.WithHeader("Shortcuts - "+prompt),
 		fuzzy.WithPreviewWindow(func(i, w, h int) string {
 			if i == -1 {
 				return ""

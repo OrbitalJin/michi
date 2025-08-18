@@ -11,6 +11,7 @@ import (
 type ProviderRepoIface interface {
 	Migrate() error
 	GetByTag(tag string) (*models.SearchProvider, error)
+	GetAll() ([]models.SearchProvider, error)
 	Insert(sp models.SearchProvider) error
 }
 
@@ -65,4 +66,23 @@ func (r *ProviderRepo) Insert(sp models.SearchProvider) error {
 		return fmt.Errorf("duplicate provider tag '%s': %w", sp.Tag, err)
 	}
 	return err
+}
+
+func (r *ProviderRepo) GetAll() ([]models.SearchProvider, error) {
+	stmt := `SELECT id, tag, url, category, domain, rank, site_name, subcategory FROM search_providers`
+	rows, err := r.db.Query(stmt)
+	if err != nil {
+		return nil, fmt.Errorf("failed to query all providers: %w", err)
+	}
+	defer rows.Close()
+	var providers []models.SearchProvider
+	for rows.Next() {
+		var sp models.SearchProvider
+		err := rows.Scan(&sp.ID, &sp.Tag, &sp.URL, &sp.Category, &sp.Domain, &sp.Rank, &sp.SiteName, &sp.Subcategory)
+		if err != nil {
+			return nil, fmt.Errorf("failed to scan provider: %w", err)
+		}
+		providers = append(providers, sp)
+	}
+	return providers, nil
 }

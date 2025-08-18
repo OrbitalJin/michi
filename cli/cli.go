@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"github.com/OrbitalJin/michi/cli/bangs"
 	"github.com/OrbitalJin/michi/cli/history"
 	"github.com/OrbitalJin/michi/cli/lifecycle"
 	"github.com/OrbitalJin/michi/cli/sessions"
@@ -20,12 +21,13 @@ func New(server *server.Server) *v2.App {
 		Usage:                "A super-charger search engine multiplexer 🚀",
 		EnableBashCompletion: true,
 		Commands: []*v2.Command{
-			history.Root(server.GetServices().GetHistoryService()),
-			shortcuts.Root(server.GetServices().GetShortcutService()),
-			sessions.Root(server),
 			lifecycle.Serve(server),
 			lifecycle.Stop(server),
 			lifecycle.Doctor(server),
+			shortcuts.Root(server.GetServices().GetShortcutService()),
+			sessions.Root(server.GetServices().GetSessionService()),
+			history.Root(server.GetServices().GetHistoryService()),
+			bangs.Root(server.GetServices().GetProvidersService()),
 		},
 	}
 }
