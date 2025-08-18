@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/url"
-	"strings"
 
 	"github.com/OrbitalJin/michi/internal/cache"
 	"github.com/OrbitalJin/michi/internal/models"
@@ -141,8 +140,9 @@ func (service *SPService) Resolve(
 		return nil, nil, fmt.Errorf("provider cannot be nil.")
 	}
 
+	// replace %s with the encoded query
 	encoded := url.QueryEscape(query)
-	url := strings.Replace(provider.URL, "{{{s}}}", encoded, 1)
+	url := fmt.Sprintf(provider.URL, encoded)
 	return provider, &url, nil
 }
 
