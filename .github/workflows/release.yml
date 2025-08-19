@@ -5,6 +5,9 @@ on:
     tags:
       - "v*.*.*"   # e.g. v0.1.0, v1.2.3
 
+permissions:
+  contents: write  
+
 jobs:
   goreleaser:
     runs-on: ubuntu-latest
