@@ -4,25 +4,37 @@ set -euo pipefail
 BINARY="michi"
 DEST="$HOME/.local/bin/$BINARY"
 
+# Colors
+GREEN="\033[1;32m"
+YELLOW="\033[1;33m"
+RED="\033[1;31m"
+CYAN="\033[1;36m"
+RESET="\033[0m"
+
+echo -e "${CYAN}🚀 Starting uninstallation of $BINARY...${RESET}"
+
 # Stop the service if running
 if command -v "$DEST" &>/dev/null; then
-    echo "Stopping $BINARY service..."
-    "$DEST" stop || echo "$BINARY stop command failed or service not running"
+    echo -e "${YELLOW}⏹ Stopping $BINARY service...${RESET}"
+    if "$DEST" stop &>/dev/null; then
+        echo -e "${GREEN}✅ $BINARY service stopped.${RESET}"
+    else
+        echo -e "${RED}⚠️ $BINARY stop command failed or service not running.${RESET}"
+    fi
 else
-    echo "$BINARY binary not found, skipping stop"
+    echo -e "${YELLOW}⚠️ $BINARY binary not found, skipping stop.${RESET}"
 fi
 
 # Remove binary
 if [ -f "$DEST" ]; then
-    echo "Removing $BINARY from $DEST"
+    echo -e "${YELLOW}🗑 Removing $BINARY from $DEST...${RESET}"
     rm -f "$DEST"
-    echo "$BINARY removed"
+    echo -e "${GREEN}✅ $BINARY removed successfully!${RESET}"
 else
-    echo "$BINARY not found at $DEST, nothing to do"
-    echo "Perhaps it was already removed?"
-    echo "If you wish to install it, run the install script."
+    echo -e "${RED}⚠️ $BINARY not found at $DEST, nothing to do.${RESET}"
+    echo -e "${CYAN}💡 Perhaps it was already removed? Run the install script to reinstall.${RESET}"
     exit 0
 fi
 
-echo "Note: All configuration under ~/.michi still exist. Manually remove them if needed."
-echo "Thank you for using michi!"
+echo -e "${CYAN}ℹ️ Note: All configuration under ~/.michi still exists. Manually remove them if needed.${RESET}"
+echo -e "${GREEN}🎉 Thank you for using $BINARY!${RESET}"
