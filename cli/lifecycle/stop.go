@@ -18,15 +18,26 @@ func Stop(server *server.Server) *cli.Command {
 
 			pid, err := readPidFile(pidFile)
 			if err != nil {
-				return fmt.Errorf("server not running")
+				fmt.Printf("%s●%s Server not running (no PID file)\n", RED, RESET)
+				return nil
 			}
 
+			// Try to stop the process
 			if err := syscall.Kill(pid, syscall.SIGTERM); err != nil {
+				fmt.Printf(
+					"%s●%s Failed to stop server (PID: %d): %v\n",
+					RED,
+					RESET,
+					pid,
+					err,
+				)
 				return err
 			}
 
-			os.Remove(pidFile)
-			fmt.Println("Server stopped")
+			// Remove PID file
+			_ = os.Remove(pidFile)
+
+			fmt.Printf("%s●%s Server stopped (PID: %d)\n", GREEN, RESET, pid)
 			return nil
 		},
 	}

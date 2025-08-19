@@ -9,6 +9,13 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+const (
+	GREEN  = "\033[32m"
+	RED    = "\033[31m"
+	YELLOW = "\033[33m"
+	RESET  = "\033[0m"
+)
+
 func Serve(server *server.Server) *cli.Command {
 	return &cli.Command{
 		Name:  "serve",
@@ -20,23 +27,53 @@ func Serve(server *server.Server) *cli.Command {
 			pidFile := server.GetConfig().PidFile
 			logFile := server.GetConfig().LogFile
 
+			// Check if already running
 			if pid, err := readPidFile(pidFile); err == nil {
 				if processExists(pid) {
-					fmt.Printf("Server already running (PID %d)\n", pid)
+					fmt.Printf("%s●%s Server already running (PID: %d)\n",
+						YELLOW, RESET, pid)
 					return nil
 				}
-				os.Remove(pidFile)
+				// PID file exists but process is gone
+				fmt.Printf("%s●%s Removing stale PID file (PID: %d not running)\n",
+					RED, RESET, pid)
+				_ = os.Remove(pidFile)
 			}
 
+			// Detached mode
 			if ctx.Bool("detach") {
-				return daemon(logFile)
+				if err := daemon(logFile); err != nil {
+					fmt.Printf("%s●%s Failed to start server in background: %v\n",
+						RED, RESET, err)
+					return err
+				}
+				fmt.Printf("%s●%s Server started in background (logs: %s)\n",
+					GREEN, RESET, logFile)
+				return nil
 			}
 
-			if err := os.WriteFile(pidFile, []byte(strconv.Itoa(os.Getpid())), 0644); err != nil {
-				return fmt.Errorf("failed to write PID file: %w", err)
+			// Foreground mode
+			if err := os.WriteFile(
+				pidFile,
+				[]byte(strconv.Itoa(os.Getpid())),
+				0644,
+			); err != nil {
+				fmt.Printf(
+					"%s●%s Failed to write PID file: %v\n",
+					RED,
+					RESET,
+					err,
+				)
+				return err
 			}
-
 			defer os.Remove(pidFile)
+
+			fmt.Printf(
+				"%s●%s Server running in foreground (PID: %d)\n",
+				GREEN,
+				RESET,
+				os.Getpid(),
+			)
 
 			return server.Serve()
 		},

@@ -17,10 +17,16 @@ func Doctor(server *server.Server) *cli.Command {
 			pid, err := readPidFile(pidFile)
 			running := err == nil && processExists(pid)
 
-			fmt.Printf("Running: %t\n", running)
 			if running {
-				fmt.Printf("PID: %d\n", pid)
+				fmt.Printf("%s●%s Running   (PID: %d)\n", GREEN, RESET, pid)
+			} else if err == nil {
+				// PID file exists but process is gone
+				fmt.Printf("%s●%s Stale PID file found (PID: %d not running)\n", YELLOW, RESET, pid)
+			} else {
+				// No PID file or unreadable
+				fmt.Printf("%s●%s Not running\n", RED, RESET)
 			}
+
 			return nil
 		},
 	}

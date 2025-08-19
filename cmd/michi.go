@@ -15,11 +15,13 @@ import (
 )
 
 func main() {
-	gin.SetMode(gin.ReleaseMode)
+	isDebug := os.Getenv("ENV") == "dev"
 
-	if os.Getenv("ENV") == "dev" {
+	if isDebug {
 		gin.SetMode(gin.DebugMode)
 		log.Println("Running in development mode.")
+	} else {
+		gin.SetMode(gin.ReleaseMode)
 	}
 
 	configDir, err := internal.EnsureConfigDir()
@@ -27,26 +29,27 @@ func main() {
 		log.Fatalf("Failed to prepare configuration directory: %v", err)
 	}
 
-	config, err := internal.LoadConfig(filepath.Join(configDir, "config.yaml"))
+	configPath := filepath.Join(configDir, "config.yaml")
+	config, err := internal.LoadConfig(configPath)
 	if err != nil {
 		log.Fatalf("Failed to load application configuration: %v", err)
 	}
 
-	config.Server.PidFile = internal.ExpandTilde(config.Server.PidFile)
-	config.Server.LogFile = internal.ExpandTilde(config.Server.LogFile)
-	config.Store.DBPath = internal.ExpandTilde(config.Store.DBPath)
+	if err = internal.EnsureHydrationFile(); err != nil {
+		log.Fatalf("Failed to hydrate database: %v", err)
+	}
 
 	bangParserConfig := parser.NewConfig(config.Parser.BangPrefix)
 	shortcutParserConfig := parser.NewConfig(config.Parser.ShortcutPrefix)
 	sessionParserConfig := parser.NewConfig(config.Parser.SessionPrefix)
 
-	storeConfig := store.NewConfig(config.Store.DBPath)
+	storeConfig := store.NewConfig(config.DBPath)
 	serviceConfig := service.NewConfig(config.Service.KeepTrack, config.Service.DefaultProvider)
 
 	serverConfig := server.NewConfig(
 		config.Server.Port,
-		config.Server.PidFile,
-		config.Server.LogFile,
+		config.PidFile,
+		config.LogFile,
 		bangParserConfig,
 		shortcutParserConfig,
 		sessionParserConfig,
@@ -55,15 +58,12 @@ func main() {
 	)
 
 	michi, err := server.New(serverConfig)
-
 	if err != nil {
-		panic(err)
+		log.Fatalf("Failed to initialize server: %v", err)
 	}
 
 	michiCli := cli.New(michi)
-	err = michiCli.Run(os.Args)
-
-	if err != nil {
-		log.Fatal(err)
+	if err := michiCli.Run(os.Args); err != nil {
+		log.Fatalf("Failed to run CLI: %v", err)
 	}
 }
