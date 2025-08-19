@@ -1,10 +1,8 @@
 # michi
 
-A blazing-fast, local search multiplexer for your browser's default search. Navigate the web with custom bangs, shortcuts, and session launchers, all powered by a tiny, self-hosted Go service.
+A blazing-fast, local search multiplexer for your browser. Navigate the web with custom bangs, shortcuts, and session launchers, all powered by a tiny, self-hosted Go service.
 
 ## Features
-
-
 - Shortcuts: Create, list, and delete shortcuts to quickly access frequently used URLs.
 - Sessions: Create, list, and delete sessions to group related shortcuts together.
 - Bangs: Create, list, and delete bangs to quickly access frequently used search queries.
@@ -40,12 +38,11 @@ The server will listen on `http://localhost:5980` by default.
 
 Set `http://localhost:5980/?q=%s` as your browser's default search engine.
 
-**Instructions for common browsers:**
+Instructions for common browsers:
 *   **Zen:** `Settings > Search > Search Shortcuts`
     *  Don't forget to set michi as your default search engine at the top of the page. 
 *   **Chromium:** `Settings > Search engine > Manage search engines and site search > Add`
     *   **Search engine:** `michi`
-    *   **Shortcut:** `qmx` (or anything you prefer)
     *   **URL with %s:** `http://localhost:5980/?q=%s`
 ---
 
@@ -53,38 +50,93 @@ Set `http://localhost:5980/?q=%s` as your browser's default search engine.
 
 Once configured, simply type into your browser's address bar:
 
-*   **Bang Search:**
-*   `!g my Go query`
-    *   `!yt epic jdm cars drifting`
-    *   `!gh michi`
-*   **Web Shortcut:**
-    *   `#portal`
-    *   `#book`
-*   **Session Launcher:**
-    *   `@dev`
-    *   `@learning`
+- Bang Search:
+```bash
+!g my Go query
+!yt epic jdm cars drifting
+!gh michi
+```
 
+- Web Shortcut:
+```bash 
+#portal
+#book
+#repos
+```
+
+- Session Launcher:
+```bash
+@dev 
+@learning
+```
 ---
 
 ## CLI Commands
 
-`michi` offers commands to manage your bangs, shortcuts, and sessions:
+`michi` offers commands to manage your bangs, shortcuts, sessions & it's lifecycle
 
-*   **`michi serve`**: Starts the local HTTP server.
-*   **`michi add-bang <prefix> <url_template>`**: Add or update a bang.
-    *   Example: `michi add-bang so https://stackoverflow.com/search?q=%s`
-*   **`michi add-shortcut <name> <url>`**: Add or update a web shortcut.
-    *   Example: `michi add-shortcut portal https://myschool-portal.com/student-dashboard`
-*   **`michi add-session <name> <url1> [url2...]`**: Add or update a session.
-    *   Example: `michi add-session dev https://github.com/user https://stackoverflow.com https://your-local-dev-server:3000`
-*   **`michi list`**: (Coming Soon) List all configured bangs, shortcuts, and sessions.
-*   **`michi delete <type> <name/prefix>`**: (Coming Soon) Delete a bang, shortcut, or session.
-    *   Example: `michi delete bang old`
-    *   Example: `michi delete shortcut old-link`
-    *   Example: `michi delete session old-session`
+```bash
+michi serve
+michi serve --detach
+michi stop
+michi doctor
+
+
+michi shortcuts list 
+michi shortcuts add --alias "michi" --url "https://github.com/OrbitalJin/michi"
+...
+
+michi sessions list 
+michi sessions add --alias "sesh" \ 
+                   --url "https://google.com" \ 
+                   --url "https://github.com" 
+...
+```
+> You can use `michi --help` to get a list of available commands
+
+## Uninstall
+
+if you want to uninstall the cli, you can run the following command
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/OrbitalJin/michi/refs/heads/main/uninstall.sh | bash
+```
+
+> For data intergrity purposes, all user data stored under ~/.michi will be kept. Manually delete them if you want.
 
 ---
 
+## Todo
+- [ ] Add support for arm64 & darwin
+- [ ] Migrate to sqlc
+- [ ] Analytics
+- [x] CI/CD crossplatform build pipeline
+- [x] curl & bash installer | uninstaller
+- [x] Hydrate local user's copy of the database from embedded snapshot
+- [x] Make sure to only store history in the local copy of the database
+- [x] cli
+- [x] Shortcuts e.g. repos => github.com/johndoe?tab=repositories
+- [x] Bangs
+- [x] History
+- [x] Sessions
+- [x] embedded templates
+- [x] seperate router with templates & handlers
+- [x] Setup database connection
+- [x] Setup database migrations
+- [x] scrape & dump duckduckgo's bang index into the relational db
+- [x] Implement query & bang parsing 
+- [x] Check bang matches against db and keep highest ranking one 
+- [x] Implement service layer 
+- [x] Implement url resolving
+- [x] fix cors
+- [x] Implement provider fallback
+- [x] Speed it up
+- [x] clean up api & router
+- [x] implement caching using sync.Map
+- [x] Implement features: shortcuts #, sessions @ and history $
+- [x] Refactor config to use yaml 
+- [x] build cli
+- [x] Embed snapshot of the database & hydrate a local version on the user's machine
 
 ## cli 
 - [x] Implement copy to clipboard
@@ -116,37 +168,4 @@ Once configured, simply type into your browser's address bar:
 - [x] Repository
 - [x] Service
 - [x] Go routine for db transactions
-- [ ] Middleware
 
-## Todo
-- [ ] Add support for arm64 & darwin
-- [ ] CI/CD crossplatform build pipeline
-- [ ] bash installer + curl | sh 
-- [ ] Migrate to sqlc?
-- [ ] Analytics
-- [ ] Apps like translate e.g. $translate
-- [x] Hydrate local user's copy of the database from embedded snapshot
-- [x] Make sure to only store history in the local copy of the database
-- [x] cli
-- [x] Shortcuts e.g. repos => github.com/johndoe?tab=repositories
-- [x] Bangs
-- [x] History
-- [x] Sessions
-- [x] embedded templates
-- [x] seperate router with templates & handlers
-- [x] Setup database connection
-- [x] Setup database migrations
-- [x] scrape & dump duckduckgo's bang index into the relational db
-- [x] Implement query & bang parsing 
-- [x] Check bang matches against db and keep highest ranking one 
-- [x] Implement service layer 
-- [x] Implement url resolving
-- [x] fix cors
-- [x] Implement provider fallback
-- [x] Speed it up
-- [x] clean up api & router
-- [x] implement caching using sync.Map
-- [x] Implement features: shortcuts #, sessions @ and history $
-- [x] Refactor config to use yaml 
-- [x] build cli
-- [x] Embed snapshot of the database & hydrate a local version on the user's machine
