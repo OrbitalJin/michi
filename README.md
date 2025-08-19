@@ -10,7 +10,7 @@ A blazing-fast, local search multiplexer for your browser's default search. Navi
 - Bangs: Create, list, and delete bangs to quickly access frequently used search queries.
 - Local & Private: Your configurations are stored locally in a SQLite database, never leaving your machine.
 - Blazing Fast: Runs as a tiny background service, providing instant redirects without any network latency or browser pop-up blockers.
-- Cross-Platform: Built with Go, available for Linux, macOS, and Windows.
+- Cross-Platform: Built with Go, available for Linux, macOS (soon).
 
 ## Get Started
 
@@ -33,10 +33,6 @@ Or detach it to run it in the background:
 ```bash
 michi serve --detach
 ```
-
-**For persistent background service (Recommended):**
-*   **Linux (systemd):** Instructions for setting up a systemd service unit will go here (e.g., `sudo systemctl enable --now michi`).
-*   **macOS (launchd):** Instructions for setting up a launchd agent.
 
 The server will listen on `http://localhost:5980` by default.
 
@@ -89,19 +85,6 @@ Once configured, simply type into your browser's address bar:
 
 ---
 
-## Ideas
-- [ ] Migrate to sqlc?
-- [ ] Analytics
-- [ ] Apps like translate e.g. $translate
-- [x] Hydrate local user's copy of the database from embedded snapshot
-- [x] Make sure to only store history in the local copy of the database
-- [x] cli
-- [x] Shortcuts e.g. repos => github.com/johndoe?tab=repositories
-- [x] Bangs
-- [x] History
-- [x] Sessions
-- [x] embedded templates
-- [x] seperate router with templates & handlers
 
 ## cli 
 - [x] Implement copy to clipboard
@@ -136,6 +119,21 @@ Once configured, simply type into your browser's address bar:
 - [ ] Middleware
 
 ## Todo
+- [ ] Add support for arm64 & darwin
+- [ ] CI/CD crossplatform build pipeline
+- [ ] bash installer + curl | sh 
+- [ ] Migrate to sqlc?
+- [ ] Analytics
+- [ ] Apps like translate e.g. $translate
+- [x] Hydrate local user's copy of the database from embedded snapshot
+- [x] Make sure to only store history in the local copy of the database
+- [x] cli
+- [x] Shortcuts e.g. repos => github.com/johndoe?tab=repositories
+- [x] Bangs
+- [x] History
+- [x] Sessions
+- [x] embedded templates
+- [x] seperate router with templates & handlers
 - [x] Setup database connection
 - [x] Setup database migrations
 - [x] scrape & dump duckduckgo's bang index into the relational db
@@ -152,5 +150,3 @@ Once configured, simply type into your browser's address bar:
 - [x] Refactor config to use yaml 
 - [x] build cli
 - [x] Embed snapshot of the database & hydrate a local version on the user's machine
-- [ ] CI/CD crossplatform build pipeline
-- [ ] bash installer + curl | sh 
