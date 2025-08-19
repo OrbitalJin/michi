@@ -17,7 +17,7 @@ A blazing-fast, local search multiplexer for your browser's default search. Navi
 ### 1. Installation
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/OrbitalJin/michi/master/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/OrbitalJin/michi/refs/heads/main/install.sh | bash
 ```
 
 ### 2. Start the Local Server
