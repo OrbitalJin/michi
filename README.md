@@ -111,10 +111,10 @@ curl -fsSL https://raw.githubusercontent.com/OrbitalJin/michi/refs/heads/main/un
 ---
 
 ## Todo
-- [ ] serve default search page on / & forward to /search
 - [ ] Add support for arm64 & darwin
 - [ ] Migrate to sqlc
 - [ ] Analytics
+- [x] serve default search page on / & forward to /search
 - [x] CI/CD crossplatform build pipeline
 - [x] curl & bash installer | uninstaller
 - [x] Hydrate local user's copy of the database from embedded snapshot

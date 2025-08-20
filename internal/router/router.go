@@ -46,6 +46,7 @@ func NewRouter(handler *handler.Handler) (*Router, error) {
 }
 
 func (r *Router) Route() {
+	r.Engine.GET("/", r.handler.Index)
 	r.Engine.GET("/search", r.handler.Root)
 	r.Engine.GET("/error", r.handler.Error)
 	r.Engine.GET("/session_success", r.handler.SessionOpened)

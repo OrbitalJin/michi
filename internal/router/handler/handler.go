@@ -42,6 +42,10 @@ func (h *Handler) Favicon(ctx *gin.Context) {
 	ctx.AbortWithStatus(http.StatusNoContent)
 }
 
+func (h *Handler) Index(ctx *gin.Context) {
+	ctx.HTML(http.StatusOK, "index.html", nil)
+}
+
 func (h *Handler) Error(ctx *gin.Context) {
 	message := ctx.Query("message")
 
