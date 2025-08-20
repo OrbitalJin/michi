@@ -2,6 +2,7 @@ package internal
 
 import (
 	"embed"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -104,12 +105,21 @@ func EnsureHydrationFile() error {
 		return err
 	}
 
+	dbPath := filepath.Join(configDir, "michi.db")
+
+	if _, err := os.Stat(dbPath); err == nil {
+		return nil
+
+	} else if !errors.Is(err, os.ErrNotExist) {
+		return err
+	}
+
 	data, err := hydratorDB.ReadFile("hydrator.db")
 	if err != nil {
 		return err
 	}
 
-	return os.WriteFile(filepath.Join(configDir, "michi.db"), data, 0o644)
+	return os.WriteFile(dbPath, data, 0o644)
 }
 
 func createDefaultConfigFile(path string, cfg *Config) (*Config, error) {
