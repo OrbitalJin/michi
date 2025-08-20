@@ -34,16 +34,18 @@ michi serve --detach
 
 The server will listen on `http://localhost:5980` by default.
 
+> Note that you can change this port through the configuration file, under ~/.michi/config.yaml
+
 ### 3. Configure Your Browser
 
-Set `http://localhost:5980/?q=%s` as your browser's default search engine.
+Set `http://localhost:5980/search?q=%s` as your browser's default search engine.
 
 Instructions for common browsers:
 *   **Zen:** `Settings > Search > Search Shortcuts`
     *  Don't forget to set michi as your default search engine at the top of the page. 
 *   **Chromium:** `Settings > Search engine > Manage search engines and site search > Add`
     *   **Search engine:** `michi`
-    *   **URL with %s:** `http://localhost:5980/?q=%s`
+    *   **URL with %s:** `http://localhost:5980/search?q=%s`
 ---
 
 ## Usage
@@ -69,6 +71,8 @@ Once configured, simply type into your browser's address bar:
 @dev 
 @learning
 ```
+
+> All prefixes can be customized in the configuration file, under ~/.michi/config.yaml
 ---
 
 ## CLI Commands
