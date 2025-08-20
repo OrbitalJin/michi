@@ -34,10 +34,10 @@ func Serve(server *server.Server) *cli.Command {
 						YELLOW, RESET, pid)
 					return nil
 				}
-				// PID file exists but process is gone
-				fmt.Printf("%s●%s Removing stale PID file (PID: %d not running)\n",
-					RED, RESET, pid)
-				_ = os.Remove(pidFile)
+				fmt.Printf("%s●%s Stale PID file found (PID: %d not running)\n", YELLOW, RESET, pid)
+				// ask to run michi doctor --fix
+				fmt.Printf("%s●%s Try running 'michi doctor --fix'\n", YELLOW, RESET)
+				return nil
 			}
 
 			// Detached mode

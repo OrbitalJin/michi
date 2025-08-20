@@ -24,14 +24,9 @@ func Stop(server *server.Server) *cli.Command {
 
 			// Try to stop the process
 			if err := syscall.Kill(pid, syscall.SIGTERM); err != nil {
-				fmt.Printf(
-					"%s●%s Failed to stop server (PID: %d): %v\n",
-					RED,
-					RESET,
-					pid,
-					err,
-				)
-				return err
+				fmt.Printf("%s●%s Failed to stop server (PID: %d): %v\n", RED, RESET, pid, err)
+				fmt.Printf("%s●%s Try running 'michi doctor --fix'\n", YELLOW, RESET)
+				return nil
 			}
 
 			// Remove PID file
