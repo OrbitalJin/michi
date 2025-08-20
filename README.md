@@ -32,7 +32,8 @@ Or detach it to run it in the background:
 michi serve --detach
 ```
 
-The server will listen on `http://localhost:5980` by default.
+The server will run on `http://localhost:5980` by default. And the default search page will be served on the root path `/`.
+i.e. `http://localhost:5980/`
 
 > Note that you can change this port through the configuration file, under ~/.michi/config.yaml
 
