@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -64,6 +65,6 @@ func main() {
 
 	michiCli := cli.New(michi)
 	if err := michiCli.Run(os.Args); err != nil {
-		log.Fatalf("Failed to run CLI: %v", err)
+		fmt.Printf("%s●%s %v\n", internal.ColorRed, internal.ColorReset, err)
 	}
 }

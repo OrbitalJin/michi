@@ -2,13 +2,13 @@ package lifecycle
 
 import (
 	"fmt"
-	"os"
 
-	"github.com/OrbitalJin/michi/internal/server"
+	"github.com/OrbitalJin/michi/internal"
+	"github.com/OrbitalJin/michi/internal/server/manager"
 	"github.com/urfave/cli/v2"
 )
 
-func Doctor(server *server.Server) *cli.Command {
+func Doctor(sm *manager.ServerManager) *cli.Command {
 	return &cli.Command{
 		Name:  "doctor",
 		Usage: "check michi status",
@@ -22,23 +22,32 @@ func Doctor(server *server.Server) *cli.Command {
 		Action: func(ctx *cli.Context) error {
 			fix := ctx.Bool("fix")
 
-			pidFile := server.GetConfig().PidFile
+			ok, pid := sm.ValiatePID()
 
-			pid, err := readPidFile(pidFile)
-			running := err == nil && processExists(pid)
+			if !ok {
+				fmt.Printf("%s●%s Not running\n", internal.ColorRed, internal.ColorReset)
+				return nil
+			}
 
-			if running {
-				fmt.Printf("%s●%s Running   (PID: %d)\n", GREEN, RESET, pid)
-			} else if err == nil {
-				fmt.Printf("%s●%s Stale PID file found (PID: %d not running)\n", YELLOW, RESET, pid)
-				if fix {
-					fmt.Printf("%s●%s Removing stale PID file (PID: %d not running)\n",
-						RED, RESET, pid)
-					_ = os.Remove(pidFile)
-					fmt.Printf("%s●%s Michi should be ready to run\n", GREEN, RESET)
+			isRunning := sm.ProcessExists(pid)
+
+			if isRunning {
+				fmt.Printf("%s●%s Running (PID: %d)\n",
+					internal.ColorGreen, internal.ColorReset, pid)
+				return nil
+			}
+
+			fmt.Printf("%s●%s Stale PID file found (PID: %d not running)\n",
+				internal.ColorYellow, internal.ColorReset, pid)
+
+			if fix {
+				fmt.Printf("%s●%s Removing stale PID file\n",
+					internal.ColorRed, internal.ColorReset)
+				if err := sm.RemovePIDFile(); err != nil {
+					return err
 				}
-			} else {
-				fmt.Printf("%s●%s Not running\n", RED, RESET)
+				fmt.Printf("%s●%s Michi should be ready to run\n",
+					internal.ColorGreen, internal.ColorReset)
 			}
 
 			return nil

@@ -56,7 +56,7 @@ func NewDefaultAppConfig() *Config {
 	cfg.Service.KeepTrack = true
 	cfg.Service.DefaultProvider = "g"
 
-	cfg.PidFile = filepath.Join(homeDir, ".michi", "michi.daemon.pid")
+	cfg.PidFile = filepath.Join(homeDir, ".michi", "michi.proc.pid")
 	cfg.LogFile = filepath.Join(homeDir, ".michi", "michi.log")
 	cfg.DBPath = filepath.Join(homeDir, ".michi", "michi.db")
 
