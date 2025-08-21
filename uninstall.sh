@@ -27,7 +27,7 @@ fi
 
 # Remove binary
 if [ -f "$DEST" ]; then
-    echo -e "${YELLOW}🗑 Removing $BINARY from $DEST...${RESET}"
+    echo -e "${YELLOW}🗑  Removing $BINARY from $DEST...${RESET}"
     rm -f "$DEST"
     echo -e "${GREEN}✅ $BINARY removed successfully!${RESET}"
 else
@@ -36,5 +36,5 @@ else
     exit 0
 fi
 
-echo -e "${CYAN}ℹ️ Note: All configuration under ~/.michi still exists. Manually remove them if needed.${RESET}"
+echo -e "${CYAN}ℹ️ All configuration under ~/.michi still exists. Manually remove them if needed.${RESET}"
 echo -e "${GREEN}🎉 Thank you for using $BINARY!${RESET}"

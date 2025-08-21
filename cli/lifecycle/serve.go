@@ -10,7 +10,10 @@ func Serve(sm *manager.ServerManager) *cli.Command {
 		Name:  "serve",
 		Usage: "serve michi",
 		Flags: []cli.Flag{
-			&cli.BoolFlag{Name: "detach"},
+			&cli.BoolFlag{
+				Name: "detach",
+				Usage: "run the server in background",
+			},
 		},
 		Action: func(ctx *cli.Context) error {
 

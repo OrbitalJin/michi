@@ -79,13 +79,13 @@ func (sm *ServerManager) RunForeground() error {
 	errChan := make(chan error, 1)
 	go func() {
 		fmt.Printf("%s●%s Server started in foreground\n", internal.ColorGreen, internal.ColorReset)
-		fmt.Println("[>_] Press Ctrl+C to stop")
+		fmt.Print("[>_] Press Ctrl+C to stop")
 		errChan <- sm.server.Serve()
 	}()
 
 	select {
 	case sig := <-sigChan:
-		fmt.Printf("%s●%s Received signal %v, shutting down...\n", internal.ColorYellow, internal.ColorReset, sig)
+		fmt.Printf("\n%s●%s Received signal %v, shutting down...\n", internal.ColorYellow, internal.ColorReset, sig)
 		_, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 		return sm.Shutdown()
