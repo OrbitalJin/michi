@@ -57,7 +57,7 @@ func (sm *ServerManager) Daemonize() error {
 		return fmt.Errorf("failed to start daemon: %w", err)
 	}
 
-	fmt.Printf("%s●%s Server started in background (PID: %d)\n", internal.ColorRed, internal.ColorReset, cmd.Process.Pid)
+	fmt.Printf("%s●%s Server started in background (PID: %d)\n", internal.ColorGreen, internal.ColorReset, cmd.Process.Pid)
 	return nil
 }
 
