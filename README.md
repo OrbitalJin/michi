@@ -115,6 +115,9 @@ curl -fsSL https://raw.githubusercontent.com/OrbitalJin/michi/refs/heads/main/un
 - [ ] Add support for arm64 & darwin
 - [ ] Migrate to sqlc
 - [ ] Analytics
+- [ ] Firewall rules
+- [ ] configurable redirects to avoid certain websites
+- [ ] list down average reponse time in help command
 - [x] serve default search page on / & forward to /search
 - [x] CI/CD crossplatform build pipeline
 - [x] curl & bash installer | uninstaller
