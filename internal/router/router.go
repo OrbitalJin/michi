@@ -50,7 +50,7 @@ func (r *Router) Route() {
 	r.Engine.GET("/search", r.handler.Root)
 	r.Engine.GET("/error", r.handler.Error)
 	r.Engine.GET("/session_success", r.handler.SessionOpened)
-	r.Engine.GET("/favicon.ico", r.handler.Favicon)
+	r.Engine.GET("/favicon.svg", r.handler.Favicon)
 }
 
 func (r *Router) GetEngine() *gin.Engine {

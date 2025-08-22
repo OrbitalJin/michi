@@ -1,27 +1,24 @@
 package templater
 
 import (
-	"embed"
 	"html/template"
-	"io/fs"
-)
 
-//go:embed templates/*
-var embeddedTemplates embed.FS
+	"github.com/OrbitalJin/michi/public"
+)
 
 type Templater struct {
 	templates *template.Template
 }
 
 func New() (*Templater, error) {
-	templatesFS, err := fs.Sub(embeddedTemplates, "templates")
+	tmplFS, err := public.SubDir("assets/templates")
 	if err != nil {
 		return nil, err
 	}
 
 	tmpl := template.New("")
 
-	tmpl, err = tmpl.ParseFS(templatesFS, "*.html")
+	tmpl, err = tmpl.ParseFS(tmplFS, "*.html")
 	if err != nil {
 		return nil, err
 	}

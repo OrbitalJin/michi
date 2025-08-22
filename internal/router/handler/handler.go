@@ -6,6 +6,7 @@ import (
 	"github.com/OrbitalJin/michi/internal/models"
 	"github.com/OrbitalJin/michi/internal/parser"
 	"github.com/OrbitalJin/michi/internal/service"
+	"github.com/OrbitalJin/michi/public"
 	"github.com/gin-gonic/gin"
 )
 
@@ -39,7 +40,12 @@ func NewHandler(
 }
 
 func (h *Handler) Favicon(ctx *gin.Context) {
-	ctx.AbortWithStatus(http.StatusNoContent)
+		data, err := public.Content.ReadFile("assets/favicon.svg")
+		if err != nil {
+			ctx.Status(http.StatusNotFound)
+			return
+		}
+		ctx.Data(http.StatusOK, "image/svg+xml", data)
 }
 
 func (h *Handler) Index(ctx *gin.Context) {
@@ -57,11 +63,7 @@ func (h *Handler) Error(ctx *gin.Context) {
 }
 
 func (h *Handler) SessionOpened(ctx *gin.Context) {
-	ctx.HTML(http.StatusOK, "session_success.html",
-		gin.H{
-			"DefaultEngine": "https://www.google.com/",
-		},
-	)
+	ctx.HTML(http.StatusOK, "session_success.html", nil)
 }
 
 func (h *Handler) completeSearchRequest(

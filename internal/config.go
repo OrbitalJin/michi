@@ -1,18 +1,15 @@
 package internal
 
 import (
-	"embed"
 	"errors"
 	"fmt"
 	"log"
 	"os"
 	"path/filepath"
 
+	"github.com/OrbitalJin/michi/public"
 	"gopkg.in/yaml.v3"
 )
-
-//go:embed hydrator.db
-var hydratorDB embed.FS
 
 type UserConfig struct {
 	Server struct {
@@ -114,7 +111,7 @@ func EnsureHydrationFile() error {
 		return err
 	}
 
-	data, err := hydratorDB.ReadFile("hydrator.db")
+	data, err := public.Content.ReadFile("assets/hydrator.db")
 	if err != nil {
 		return err
 	}
