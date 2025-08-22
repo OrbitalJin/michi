@@ -15,7 +15,7 @@ A blazing-fast, local search multiplexer for your browser. Navigate the web with
 ### 1. Installation
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/OrbitalJin/michi/refs/heads/main/install.sh | bash
+curl -fsSL https://michi.run/install.sh | sh
 ```
 
 ### 2. Start the Local Server
@@ -104,7 +104,7 @@ michi sessions add --alias "sesh" \
 if you want to uninstall the cli, you can run the following command
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/OrbitalJin/michi/refs/heads/main/uninstall.sh | bash
+curl -fsSL https://michi.run/uninstall.sh | sh
 ```
 
 > For data intergrity purposes, all user data stored under ~/.michi will be kept. Manually delete them if you want.
