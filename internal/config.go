@@ -11,6 +11,8 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+var Version = "dev"
+
 type UserConfig struct {
 	Server struct {
 		Port string `yaml:"port"`

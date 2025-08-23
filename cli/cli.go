@@ -6,6 +6,7 @@ import (
 	"github.com/OrbitalJin/michi/cli/lifecycle"
 	"github.com/OrbitalJin/michi/cli/sessions"
 	"github.com/OrbitalJin/michi/cli/shortcuts"
+	"github.com/OrbitalJin/michi/internal"
 	"github.com/OrbitalJin/michi/internal/server"
 	"github.com/OrbitalJin/michi/internal/server/manager"
 	v2 "github.com/urfave/cli/v2"
@@ -21,6 +22,7 @@ func New(server *server.Server) *v2.App {
 	return &v2.App{
 		Name:                 "michi",
 		Usage:                "A super-charged search engine multiplexer 🚀",
+		Version:              internal.Version,
 		EnableBashCompletion: true,
 		Commands: []*v2.Command{
 			lifecycle.Serve(serverManager),
