@@ -112,12 +112,13 @@ curl -fsSL https://michi.run/uninstall.sh | sh
 ---
 
 ## Todo
-- [ ] Add support for arm64 & darwin
+- [ ] michi commands i.e. :michi foo
 - [ ] Migrate to sqlc
 - [ ] Analytics
 - [ ] Firewall rules
 - [ ] configurable redirects to avoid certain websites
 - [ ] list down average reponse time in help command
+- [x] Add support for arm64 & darwin
 - [x] serve default search page on / & forward to /search
 - [x] CI/CD crossplatform build pipeline
 - [x] curl & bash installer | uninstaller

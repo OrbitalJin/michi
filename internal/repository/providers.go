@@ -3,9 +3,8 @@ package repository
 import (
 	"database/sql"
 	"fmt"
-
 	"github.com/OrbitalJin/michi/internal/models"
-	"github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 )
 
 type ProviderRepoIface interface {
@@ -63,10 +62,10 @@ func (r *ProviderRepo) Insert(sp models.SearchProvider) error {
 	(tag, url, category, domain, rank, site_name, subcategory)
 	VALUES (?, ?, ?, ?, ?, ?, ?);`
 	_, err := r.db.Exec(stmt, sp.Tag, sp.URL, sp.Category, sp.Domain, sp.Rank, sp.SiteName, sp.Subcategory)
-	if sqliteErr, ok := err.(sqlite3.Error); ok && sqliteErr.ExtendedCode == sqlite3.ErrConstraintUnique {
-		return fmt.Errorf("duplicate provider tag '%s': %w", sp.Tag, err)
+	if err != nil {
+		return fmt.Errorf("failed to insert provider %q: %w", sp.Tag, err)
 	}
-	return err
+	return nil
 }
 
 func (r *ProviderRepo) GetAll() ([]models.SearchProvider, error) {

@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/OrbitalJin/michi/internal/repository"
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 )
 
 type Store struct {
@@ -22,7 +22,7 @@ func New(cfg *Config) (*Store, error) {
 		return nil, fmt.Errorf("path to database cannot be empty")
 	}
 
-	db, err := sql.Open("sqlite3", cfg.path)
+	db, err := sql.Open("sqlite", cfg.path)
 	if err != nil {
 		return nil, err
 	}

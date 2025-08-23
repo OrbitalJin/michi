@@ -10,25 +10,28 @@ builds:
     binary: michi
     goos:
       - linux
+      - darwin
     goarch:
       - amd64
+      - arm64 
+    ldflags:
+      - -s -w
 
 archives:
   - id: default
-    formats: ['tar.gz']
+    formats: [tar.gz]
     name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
     files:
       - LICENSE
       - README.md
 
-
 release:
-  github:
-    owner: michiapp 
-    name: michi     
   disable: false 
-  footer: >-
-
+  github:
+    owner: michiapp
+    name: michi
+  footer: |
     ---
-
-    Released by [GoReleaser](https://github.com/goreleaser/goreleaser).
+    🔎 michi — a blazing-fast local search multiplexer.  
+    👉 Install instructions in the README.  
+    ❤️ Contributions, feedback, and stars are welcome!
